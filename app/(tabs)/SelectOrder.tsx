@@ -1,12 +1,63 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { Text, View, Image, TouchableOpacity } from "react-native";
+import { useState } from "react";
+import { Link } from "expo-router";
+import { useOrder } from "../../context/OrderContext";
+import products from "../../data/products"; // Import the products
+import styles from "../styles/SelectOrder.styles"; // Import the styles
 
 const SelectOrder = () => {
-  return (
-    <View>
-      <Text>SelectOrder</Text>
-    </View>
-  )
-}
+  const { order, setOrder } = useOrder();
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
 
-export default SelectOrder
+  // Format the total as "R$ 00.00"
+  const formattedTotal = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(order.total);
+
+  const handleProductSelect = (productId: string) => {
+    setSelectedProduct(productId);
+    setOrder((prevOrder) => ({
+      ...prevOrder,
+      orderType: productId,
+    }));
+  };
+
+  return (
+    <View style={styles.container}>
+      {/* Top Purple Section */}
+      <View style={styles.topSection}>
+        <Text style={styles.title}>Escolha seu produto</Text>
+      </View>
+
+      {/* Product Selection */}
+      <View style={styles.productsContainer}>
+        {products.map((product) => (
+          <TouchableOpacity
+            key={product.id}
+            style={[
+              styles.productCard,
+              selectedProduct === product.id && styles.selectedProductCard,
+            ]}
+            onPress={() => handleProductSelect(product.id)}
+          >
+            <Image source={product.image} style={styles.productImage} />
+            <Text style={styles.productName}>{product.name}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {/* Bottom Purple Section */}
+      <View style={styles.bottomSection}>
+        <Text style={styles.totalText}>Total: {formattedTotal}</Text>
+        <TouchableOpacity style={styles.continueButton}>
+          <Link href="./ChooseSize" style={styles.continueButton}>
+            <Text style={styles.continueButtonText}>Continuar</Text>
+          </Link>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+export default SelectOrder;
