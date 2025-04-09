@@ -2,7 +2,7 @@ import { Text, View, Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { Link } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
-import sweeteners from "../../data/WaysToSweeten"; // Import the sweeteners data
+import sweeteners from "../../data/waysToSweeten"; // Import the sweeteners data
 import styles from "../styles/WaysToSweeten.styles"; // Import the styles
 
 const WaysToSweeten = () => {

@@ -2,7 +2,7 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { Link } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
-import sideDishes from "../../data/SideDishes"; // Import the side dishes data
+import sideDishes from "../../data/sideDishes"; // Import the side dishes data
 import styles from "../styles/SideDishes.styles"; // Import the styles
 
 const SideDishes = () => {
