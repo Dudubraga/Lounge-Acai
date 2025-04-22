@@ -1,13 +1,14 @@
 import { Text, View, TouchableOpacity } from "react-native";
 import { useState } from "react";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
-import sideDishes from "../../data/sideDishes"; 
-import styles from "../styles/SideDishes.styles"; 
+import sideDishes from "../../data/sideDishes";
+import styles from "../styles/SideDishes.styles";
 
 const SideDishes = () => {
   const { order, setOrder } = useOrder();
   const [selectedDishes, setSelectedDishes] = useState<{ [key: string]: number }>({});
+  const router = useRouter();
 
   const handleAddDish = (dishId: string) => {
     setSelectedDishes((prev) => ({
@@ -29,6 +30,7 @@ const SideDishes = () => {
       ...prevOrder,
       sideDishes: selectedDishIds,
     }));
+    router.push("/Fruits");
   };
 
   const formattedTotal = new Intl.NumberFormat("pt-BR", {
@@ -50,11 +52,7 @@ const SideDishes = () => {
         </Text>
         <Text style={styles.accompaniments}>
           Acompanhamentos{" "}
-          {
-            Object.keys(selectedDishes).filter(
-              (dishId) => selectedDishes[dishId] > 0
-            ).length
-          }
+          {Object.keys(selectedDishes).filter((dishId) => selectedDishes[dishId] > 0).length}
           /{order.sideDishes.length}
         </Text>
       </View>
@@ -80,10 +78,8 @@ const SideDishes = () => {
       {/* Bottom Purple Section */}
       <View style={styles.bottomSection}>
         <Text style={styles.totalText}>Total: {formattedTotal}</Text>
-        <TouchableOpacity style={styles.continueButton}>
-          <Link href="./Fruits" style={styles.continueButton}>
-            <Text style={styles.continueButtonText}>Continuar</Text>
-          </Link>
+        <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
+          <Text style={styles.continueButtonText}>Continuar</Text>
         </TouchableOpacity>
       </View>
     </View>

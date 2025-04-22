@@ -1,15 +1,20 @@
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { useOrder } from "../../context/OrderContext";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import styles from "../styles/OrderSummary.styles";
 
 const OrderSummary = () => {
   const { order } = useOrder();
+  const router = useRouter();
 
   const formattedTotal = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   }).format(order.total);
+
+  const handleFinalizeOrder = () => {
+    router.push("/");
+  };
 
   return (
     <View style={styles.container}>
@@ -34,7 +39,10 @@ const OrderSummary = () => {
           <Text style={styles.detailText}>
             Acompanhamentos:
             {order.sideDishes.length > 0
-              ? order.sideDishes.map((dish, index) => ` ${dish}${index < order.sideDishes.length - 1 ? "," : ""}`)
+              ? order.sideDishes.map(
+                  (dish, index) =>
+                    ` ${dish}${index < order.sideDishes.length - 1 ? "," : ""}`
+                )
               : " Nenhum"}
           </Text>
           <Text style={styles.detailText}>
@@ -45,9 +53,9 @@ const OrderSummary = () => {
       </View>
 
       {/* Finalize Order Button */}
-      <Link href="./" style={styles.finalizeButton}>
+      <TouchableOpacity style={styles.finalizeButton} onPress={handleFinalizeOrder}>
         <Text style={styles.finalizeButtonText}>Realizar Pedido</Text>
-      </Link>
+      </TouchableOpacity>
     </View>
   );
 };

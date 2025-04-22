@@ -1,6 +1,6 @@
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity, Alert } from "react-native";
 import { useState } from "react";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
 import sweeteners from "../../data/waysToSweeten";
 import styles from "../styles/WaysToSweeten.styles"; 
@@ -8,6 +8,7 @@ import styles from "../styles/WaysToSweeten.styles";
 const WaysToSweeten = () => {
   const { order, setOrder } = useOrder();
   const [selectedSweetener, setSelectedSweetener] = useState<string | null>(null);
+  const router = useRouter();
 
   const formattedTotal = new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -20,6 +21,17 @@ const WaysToSweeten = () => {
       ...prevOrder,
       sweet: sweetenerId,
     }));
+  };
+
+  const handleContinue = () => {
+    if (selectedSweetener) {
+      router.push("/SideDishes");
+    } else {
+      Alert.alert(
+        "Nenhuma forma selecionada",
+        "Por favor, selecione uma forma de adoçar para continuar"
+      );
+    }
   };
 
   return (
@@ -49,10 +61,8 @@ const WaysToSweeten = () => {
       {/* Bottom Purple Section */}
       <View style={styles.bottomSection}>
         <Text style={styles.totalText}>Total: {formattedTotal}</Text>
-        <TouchableOpacity style={styles.continueButton}>
-          <Link href="./SideDishes" style={styles.continueButton}>
-            <Text style={styles.continueButtonText}>Continuar</Text>
-          </Link>
+        <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
+          <Text style={styles.continueButtonText}>Continuar</Text>
         </TouchableOpacity>
       </View>
     </View>

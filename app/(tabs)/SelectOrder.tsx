@@ -1,6 +1,6 @@
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity, Alert } from "react-native";
 import { useState } from "react";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
 import products from "../../data/products";
 import styles from "../styles/SelectOrder.styles";
@@ -8,6 +8,7 @@ import styles from "../styles/SelectOrder.styles";
 const SelectOrder = () => {
   const { order, setOrder } = useOrder();
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+  const router = useRouter();
 
   const formattedTotal = new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -20,6 +21,14 @@ const SelectOrder = () => {
       ...prevOrder,
       orderType: productId,
     }));
+  };
+
+  const handleContinue = () => {
+    if (selectedProduct) {
+      router.push("/ChooseSize");
+    } else {
+      Alert.alert("Nenhum produto selecionado", "Por favor, selecione um produto para continuar");
+    }
   };
 
   return (
@@ -49,10 +58,8 @@ const SelectOrder = () => {
       {/* Bottom Purple Section */}
       <View style={styles.bottomSection}>
         <Text style={styles.totalText}>Total: {formattedTotal}</Text>
-        <TouchableOpacity style={styles.continueButton}>
-          <Link href="./ChooseSize" style={styles.continueButton}>
-            <Text style={styles.continueButtonText}>Continuar</Text>
-          </Link>
+        <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
+          <Text style={styles.continueButtonText}>Continuar</Text>
         </TouchableOpacity>
       </View>
     </View>
