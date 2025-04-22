@@ -2,14 +2,13 @@ import { Text, View, Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { Link } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
-import fruits from "../../data/fruits"; // Import the fruits data
-import styles from "../styles/Fruits.styles"; // Import the styles
+import fruits from "../../data/fruits"; 
+import styles from "../styles/Fruits.styles"; 
 
 const Fruits = () => {
   const { order, setOrder } = useOrder();
   const [selectedFruit, setSelectedFruit] = useState<string | null>(null);
 
-  // Format the total as "R$ 00.00"
   const formattedTotal = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",

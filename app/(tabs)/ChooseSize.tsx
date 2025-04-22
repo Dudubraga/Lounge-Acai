@@ -2,14 +2,13 @@ import { Text, View, Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { Link } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
-import sizes from "../../data/sizes"; // Import the sizes data
-import styles from "../styles/ChooseSize.styles"; // Import the styles
+import sizes from "../../data/sizes"; 
+import styles from "../styles/ChooseSize.styles"; 
 
 const ChooseSize = () => {
   const { order, setOrder } = useOrder();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
-  // Format the total as "R$ 00.00"
   const formattedTotal = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -22,7 +21,7 @@ const ChooseSize = () => {
       setOrder((prevOrder) => ({
         ...prevOrder,
         size: sizeId,
-        total: selectedSize.price, // Update the total with the selected size price
+        total: selectedSize.price,
       }));
     }
   };

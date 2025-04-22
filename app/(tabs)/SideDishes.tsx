@@ -2,8 +2,8 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { Link } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
-import sideDishes from "../../data/sideDishes"; // Import the side dishes data
-import styles from "../styles/SideDishes.styles"; // Import the styles
+import sideDishes from "../../data/sideDishes"; 
+import styles from "../styles/SideDishes.styles"; 
 
 const SideDishes = () => {
   const { order, setOrder } = useOrder();
@@ -31,7 +31,6 @@ const SideDishes = () => {
     }));
   };
 
-  // Format the total as "R$ 00.00"
   const formattedTotal = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",

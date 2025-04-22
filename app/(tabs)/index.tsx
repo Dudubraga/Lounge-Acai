@@ -5,7 +5,6 @@ import { useOrder } from "../../context/OrderContext";
 export default function Index() {
   const { order, setOrder } = useOrder();
 
-  // Initialize the order object with default values
   const initializeOrder = () => {
     setOrder({
       total: 0.0,

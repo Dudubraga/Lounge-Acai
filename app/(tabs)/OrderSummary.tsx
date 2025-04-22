@@ -1,12 +1,11 @@
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { useOrder } from "../../context/OrderContext";
 import { Link } from "expo-router";
-import styles from "../styles/OrderSummary.styles"; // Import the styles
+import styles from "../styles/OrderSummary.styles";
 
 const OrderSummary = () => {
   const { order } = useOrder();
 
-  // Format the total as "R$ 00.00"
   const formattedTotal = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -46,7 +45,7 @@ const OrderSummary = () => {
       </View>
 
       {/* Finalize Order Button */}
-      <Link href="./" style={styles.finalizeButton}> {/* Link to the main page */}
+      <Link href="./" style={styles.finalizeButton}>
         <Text style={styles.finalizeButtonText}>Realizar Pedido</Text>
       </Link>
     </View>

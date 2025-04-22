@@ -2,7 +2,7 @@ import { Text, View, Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { Link } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
-import styles from "../styles/WhereToEat.styles"; // Import the styles
+import styles from "../styles/WhereToEat.styles";
 
 const WhereToEat = () => {
   const { order, setOrder } = useOrder();
@@ -16,7 +16,6 @@ const WhereToEat = () => {
     }));
   };
 
-  // Format the total as "R$ 00.00"
   const formattedTotal = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
