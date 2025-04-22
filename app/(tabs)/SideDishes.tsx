@@ -81,9 +81,11 @@ const SideDishes = () => {
       {/* Bottom Purple Section */}
       <View style={styles.bottomSection}>
         <Text style={styles.totalText}>Total: {formattedTotal}</Text>
-        <Link href="./Fruits" style={styles.continueButton} onPress={handleContinue}>
-          <Text style={styles.continueButtonText}>Continuar</Text>
-        </Link>
+        <TouchableOpacity style={styles.continueButton}>
+          <Link href="./Fruits" style={styles.continueButton}>
+            <Text style={styles.continueButtonText}>Continuar</Text>
+          </Link>
+        </TouchableOpacity>
       </View>
     </View>
   );
