@@ -30,7 +30,7 @@ const ChooseSize = () => {
 
   const handleContinue = () => {
     if (selectedSize) {
-      router.push("/WaysToSweeten");
+      router.push("/SideDishes");
     } else {
       Alert.alert(
         "Nenhum tamanho selecionado",

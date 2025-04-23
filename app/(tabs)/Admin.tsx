@@ -43,7 +43,7 @@ export default function Admin() {
 
       {/* Top Purple Section */}
       <View style={styles.topSection}>
-        <Text style={styles.topSectionTitle}>Página de ADM</Text>
+        <Text style={styles.topSectionTitle}>ADM</Text>
       </View>
 
       {/* Bluetooth Section */}

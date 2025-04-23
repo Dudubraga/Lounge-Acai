@@ -25,7 +25,7 @@ const WaysToSweeten = () => {
 
   const handleContinue = () => {
     if (selectedSweetener) {
-      router.push("/SideDishes");
+      router.push("/ChooseSize");
     } else {
       Alert.alert(
         "Nenhuma forma selecionada",

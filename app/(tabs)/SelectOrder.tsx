@@ -25,7 +25,7 @@ const SelectOrder = () => {
 
   const handleContinue = () => {
     if (selectedProduct) {
-      router.push("/ChooseSize");
+      router.push("/WaysToSweeten");
     } else {
       Alert.alert("Nenhum produto selecionado", "Por favor, selecione um produto para continuar");
     }
