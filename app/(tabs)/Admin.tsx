@@ -18,17 +18,17 @@ export default function Admin() {
 
   if (!authenticated) {
     return (
-      <View style={localStyles.container}>
-        <Text style={localStyles.title}>Senha do Administrador</Text>
+      <View style={styles.passwordContainer}>
+        <Text style={styles.passwordTitle}>Senha do Administrador</Text>
         <TextInput
-          style={localStyles.input}
+          style={styles.passwordInput}
           value={password}
           onChangeText={setPassword}
           placeholder="Senha"
           secureTextEntry
         />
-        <TouchableOpacity style={localStyles.button} onPress={verifyPassword}>
-          <Text style={localStyles.buttonText}>Enviar</Text>
+        <TouchableOpacity style={styles.passwordButton} onPress={verifyPassword}>
+          <Text style={styles.passwordButtonText}>Enviar</Text>
         </TouchableOpacity>
       </View>
     );
@@ -74,38 +74,3 @@ export default function Admin() {
     </View>
   );
 }
-// Styles para tela da senha
-const localStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#350E4D",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-  title: {
-    color: "#FFFFFF",
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  input: {
-    width: "100%",
-    height: 50,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: "#FFFFFF",
-    width: "100%",
-    borderRadius: 8,
-    paddingVertical: 12,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#350E4D",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-});

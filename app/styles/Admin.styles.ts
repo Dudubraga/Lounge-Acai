@@ -65,6 +65,39 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 18,
   },
+  // styles pra tala da senha
+  passwordContainer: {
+    flex: 1,
+    backgroundColor: "#350E4D",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  passwordTitle: {
+    color: "#FFFFFF",
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  passwordInput: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  passwordButton: {
+    backgroundColor: "#FFFFFF",
+    width: "100%",
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  passwordButtonText: {
+    color: "#350E4D",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 });
 
 export default styles;

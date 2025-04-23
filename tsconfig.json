@@ -8,6 +8,8 @@
       ]
     },
     "jsx": "react-jsx",
+    "target": "ES2017",
+    "module": "ESNext",
   },
   "include": [
     "**/*.ts",
