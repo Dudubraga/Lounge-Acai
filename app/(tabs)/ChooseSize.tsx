@@ -1,20 +1,15 @@
-import { Text, View, Image, TouchableOpacity, Alert } from "react-native";
+import { Text, View, ScrollView, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
-import { Link } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
-import sizes from "../../data/sizes"; 
-import styles from "../styles/ChooseSize.styles"; 
+import TopSection from "../components/topSection";
+import BottomSection from "../components/bottomSection";
+import sizes from "../../data/sizes";
 
 const ChooseSize = () => {
   const { order, setOrder } = useOrder();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const router = useRouter();
-
-  const formattedTotal = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(order.total);
 
   const handleSizeSelect = (sizeId: string) => {
     setSelectedSize(sizeId);
@@ -41,13 +36,20 @@ const ChooseSize = () => {
 
   return (
     <View style={styles.container}>
-      {/* Top Purple Section */}
-      <View style={styles.topSection}>
-        <Text style={styles.title}>Escolha o Tamanho</Text>
-      </View>
+      {/* Top Title Section */}
+      <TopSection title="Tamanhos"  onBack={() => {
+        if (selectedSize) {
+          setOrder((prevOrder) => ({
+            ...prevOrder,
+            total: prevOrder.total - (sizes.find((size) => size.id === selectedSize)?.price ?? 0),
+            size: "",
+          }));
+          setSelectedSize(null);
+        }
+      }}/>
 
       {/* Sizes Selection */}
-      <View style={styles.sizesContainer}>
+      <ScrollView style={styles.sizesContainer} persistentScrollbar={true}>
         {sizes.map((size) => (
           <TouchableOpacity
             key={size.id}
@@ -59,7 +61,7 @@ const ChooseSize = () => {
           >
             <Image source={size.image} style={styles.sizeImage} />
             <View style={styles.sizeDetails}>
-              <Text style={styles.sizeVolume}>{size.volume}</Text>
+              <Text style={styles.sizeVolume}>{size.id}</Text>
               <Text style={styles.sizeAccompaniments}>
                 {size.accompaniments} acompanhamentos
               </Text>
@@ -69,17 +71,100 @@ const ChooseSize = () => {
             </View>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
 
-      {/* Bottom Purple Section */}
-      <View style={styles.bottomSection}>
-        <Text style={styles.totalText}>Total: {formattedTotal}</Text>
-        <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
-          <Text style={styles.continueButtonText}>Continuar</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Bottom Continue Section */}
+      <BottomSection continueOrder={handleContinue} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+  topSection: {
+    backgroundColor: "#350E4D",
+    borderBottomLeftRadius: 100,
+    borderBottomRightRadius: 100,
+    paddingVertical: 40,
+    alignItems: "center",
+  },
+  title: {
+    color: "#FFFFFF",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  sizesContainer: {
+    flex: 1,
+    flexDirection: "column",
+    paddingHorizontal: 20,
+    marginVertical: 20,
+  },
+  sizeCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F5F5F5",
+    borderRadius: 16,
+    marginBottom: 20,
+    padding: 15,
+    borderWidth: 2,
+    borderColor: "transparent",
+  },
+  selectedSizeCard: {
+    borderColor: "#350E4D",
+  },
+  sizeImage: {
+    width: 120,
+    height: 120,
+    marginRight: 15,
+    resizeMode: "contain",
+  },
+  sizeDetails: {
+    flex: 1,
+  },
+  sizeVolume: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#350E4D",
+  },
+  sizeAccompaniments: {
+    fontSize: 14,
+    color: "#350E4D",
+    marginTop: 5,
+  },
+  sizePrice: {
+    fontSize: 14,
+    color: "#4CAF50", 
+    marginTop: 5,
+  },
+  bottomSection: {
+    backgroundColor: "#350E4D",
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+  totalText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  continueButton: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  continueButtonText: {
+    color: "#350E4D",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+});
 
 export default ChooseSize;

@@ -1,19 +1,15 @@
-import { Text, View, Image, TouchableOpacity, Alert } from "react-native";
+import { Text, View, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
-import sweeteners from "../../data/waysToSweeten";
-import styles from "../styles/WaysToSweeten.styles"; 
+import TopSection from "../components/topSection";
+import BottomSection from "../components/bottomSection";
+import sweeteners from "../../data/sweeteners";
 
 const WaysToSweeten = () => {
   const { order, setOrder } = useOrder();
   const [selectedSweetener, setSelectedSweetener] = useState<string | null>(null);
   const router = useRouter();
-
-  const formattedTotal = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(order.total);
   
   const handleSweetenerSelect = (sweetenerId: string) => {
     setSelectedSweetener(sweetenerId);
@@ -36,10 +32,8 @@ const WaysToSweeten = () => {
 
   return (
     <View style={styles.container}>
-      {/* Top Purple Section */}
-      <View style={styles.topSection}>
-        <Text style={styles.title}>Escolha a forma de adoçar</Text>
-      </View>
+      {/* Top Title Section */}
+      <TopSection title="Formas de Adoçar" />
 
       {/* Sweeteners Selection */}
       <View style={styles.sweetenersContainer}>
@@ -53,20 +47,58 @@ const WaysToSweeten = () => {
             onPress={() => handleSweetenerSelect(sweetener.id)}
           >
             <Image source={sweetener.image} style={styles.sweetenerImage} />
-            <Text style={styles.sweetenerName}>{sweetener.name}</Text>
+            <Text style={styles.sweetenerName}>{sweetener.id}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      {/* Bottom Purple Section */}
-      <View style={styles.bottomSection}>
-        <Text style={styles.totalText}>Total: {formattedTotal}</Text>
-        <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
-          <Text style={styles.continueButtonText}>Continuar</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Bottom Continue Section */}
+      <BottomSection continueOrder={handleContinue} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+  sweetenersContainer: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "space-around",
+    marginVertical: 20,
+    marginHorizontal: 20,
+  },
+  sweetenerCard: {
+    backgroundColor: "#F5F5F5",
+    width: "40%",
+    aspectRatio: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 16,
+    marginBottom: 20,
+    padding: 5,
+    borderWidth: 2,
+    borderColor: "transparent",
+  },
+  selectedSweetenerCard: {
+    borderColor: "#350E4D",
+  },
+  sweetenerImage: {
+    width: "70%",
+    height: "70%",
+    marginBottom: 10,
+    resizeMode: "contain",
+  },
+  sweetenerName: {
+    fontSize: 16,
+    color: "#350E4D",
+    textAlign: "center",
+  },
+});
+
 
 export default WaysToSweeten;

@@ -3,11 +3,12 @@ import React, { createContext, useState, useContext } from "react";
 type Order = {
   total: number;
   orderType: string; // "Açaí", "Cupuaçu", "Açaí-Cupuaçu", "SucoAçaí", "VitaminaAçaí"
-  size: string; // "200", "300", "400", "500", "750"
+  size: string; // "200ml", "300ml", "400ml", "500ml", "750ml"
   sweet: string; // "Xarope", "Demerara", "Mascavo", "Mel", "Xilitro", "none"
-  sideDishes: string[]; // List of side dishes
+  sideDishes: { [key: string]: number }; // List of side dishes
   fruit: string; // "Morango", "Kiwi", "Manga", "none"
   local: string; // "Local", "Viagem"
+  extraCharge: number; // Extra p/ acompanhamentos
 };
 
 type OrderContextType = {
@@ -23,9 +24,10 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     orderType: "",
     size: "",
     sweet: "",
-    sideDishes: [],
+    sideDishes: {},
     fruit: "",
     local: "",
+    extraCharge: 0,
   });
 
   return (

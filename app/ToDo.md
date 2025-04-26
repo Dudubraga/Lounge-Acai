@@ -40,13 +40,8 @@
 - Banco de Dados ou não?
 
 ### 🟩 Ajustes de Design
-- Aumentar a caixa de resumo do pedido e a fonte 
-- Botão de voltar
 - Se achar algo feio
 - Se Gilberto tiver alguma sugestão
 
 ### 🟩 Suavizar Transições/Animações
 - Tentar deixar o app mais rápido/leve
-
-### 🟩 Atividades no Log
-- Ações no app devem ser relatadas no log?

@@ -1,26 +1,24 @@
-import { Text, View, Image, TouchableOpacity, Alert } from "react-native";
-import { useState } from "react";
+import { Text, View, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { useOrder } from "../../context/OrderContext";
-import styles from "../styles/WhereToEat.styles";
+import TopSection from "../components/topSection";
+import BottomSection from "../components/bottomSection";
+import places from "../../data/places";
 
 const WhereToEat = () => {
   const { order, setOrder } = useOrder();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleOptionSelect = (option: string) => {
-    setSelectedOption(option);
+  const handleOptionSelect = (option: { id: string; price: number }) => {
+    setSelectedOption(option.id);
     setOrder((prevOrder) => ({
       ...prevOrder,
-      local: option,
+      local: option.id,
+      total: prevOrder.total + (option.id === "Viagem" ? 1.5 : 0) - (prevOrder.local === "Viagem" ? 1.5 : 0),
     }));
   };
-
-  const formattedTotal = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(order.total);
 
   const handleContinue = () => {
     if (selectedOption) {
@@ -35,51 +33,90 @@ const WhereToEat = () => {
 
   return (
     <View style={styles.container}>
-      {/* Top Purple Section */}
-      <View style={styles.topSection}>
-        <Text style={styles.title}>Local de Consumo</Text>
-      </View>
+      {/* Top Title Section */}
+      <TopSection title="Onde Consumir?" onBack={() => {
+        if (selectedOption) {
+            setOrder((prevOrder) => ({
+                ...prevOrder,
+                total: prevOrder.total - (selectedOption === "Viagem" ? 1.5 : 0),
+                local: "",
+            }));
+            setSelectedOption(null);
+        }
+      }}/>
 
       {/* Options Selection */}
       <View style={styles.optionsContainer}>
-        <TouchableOpacity
-          style={[
-            styles.optionCard,
-            selectedOption === "Local" && styles.selectedOptionCard,
-          ]}
-          onPress={() => handleOptionSelect("Local")}
-        >
-          <Image
-            source={require("../../assets/images/local.png")}
-            style={styles.optionImage}
-          />
-          <Text style={styles.optionText}>Local</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            styles.optionCard,
-            selectedOption === "Viagem" && styles.selectedOptionCard,
-          ]}
-          onPress={() => handleOptionSelect("Viagem")}
-        >
-          <Image
-            source={require("../../assets/images/viagem.png")}
-            style={styles.optionImage}
-          />
-          <Text style={styles.optionText}>Viagem</Text>
-        </TouchableOpacity>
+        {places.map((place) => (
+          <TouchableOpacity
+            key={place.id}
+            style={[
+              styles.optionCard,
+              selectedOption === place.id && styles.selectedOptionCard,
+            ]}
+            onPress={() => handleOptionSelect(place)}
+          >
+            <Image source={place.image} style={styles.optionImage} />
+            <Text style={styles.optionText}>
+              {place.id}
+              {place.price > 0 && (
+                <Text style={styles.extraPriceText}>{` + R$ ${place.price.toFixed(2)}`}</Text>
+              )}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
-      {/* Bottom Purple Section */}
-      <View style={styles.bottomSection}>
-        <Text style={styles.totalText}>Total: {formattedTotal}</Text>
-        <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
-          <Text style={styles.continueButtonText}>Continuar</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Bottom Continue Section */}
+      <BottomSection continueOrder={handleContinue} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+  optionsContainer: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    marginVertical: 20,
+    paddingHorizontal: 20,
+  },
+  optionCard: {
+    backgroundColor: "#F5F5F5",
+    width: "50%",
+    aspectRatio: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 16,
+    marginBottom: 20,
+    padding: 5,
+    borderWidth: 2,
+    borderColor: "transparent",
+  },
+  selectedOptionCard: {
+    borderColor: "#350E4D",
+  },
+  optionImage: {
+    width: "70%",
+    height: "70%",
+    resizeMode: "contain",
+    marginBottom: 10,
+  },
+  optionText: {
+    fontSize: 16,
+    color: "#350E4D",
+    fontWeight: "bold",
+  },
+  extraPriceText: {
+    fontSize: 14,
+    color: "red",
+    fontWeight: "normal",
+  },
+});
 
 export default WhereToEat;

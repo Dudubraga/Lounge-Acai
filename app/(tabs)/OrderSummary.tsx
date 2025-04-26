@@ -1,7 +1,8 @@
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useOrder } from "../../context/OrderContext";
 import { useRouter } from "expo-router";
-import styles from "../styles/OrderSummary.styles";
+import TopSection from "../components/topSection";
+import BottomSection from "../components/bottomSection";
 
 const OrderSummary = () => {
   const { order } = useOrder();
@@ -13,38 +14,40 @@ const OrderSummary = () => {
   }).format(order.total);
 
   const handleFinalizeOrder = () => {
-    router.push("/");
+    Alert.alert(
+      "Pedido Realizado",
+      "Seu pedido foi realizado com sucesso!",
+      [{
+          text: "OK",
+          onPress: () => router.push("/"),
+      },]
+    );
   };
 
   return (
     <View style={styles.container}>
       {/* Top Section with Logo */}
-      <View style={styles.topSection}>
-        <Image
-          source={require("../../assets/images/lounge_logo.png")}
-          style={styles.logo}
-        />
-      </View>
-
+      <TopSection title="Resumo do Pedido" />
+      
       {/* Order Summary Section */}
       <View style={styles.summaryContainer}>
-        <Text style={styles.summaryTitle}>Resumo do pedido</Text>
         <View style={styles.summaryDetails}>
-          <Text style={styles.detailText}>Tipo: {order.orderType || "N/A"}</Text>
+          <Text style={styles.detailText}>Pedido: {order.orderType || "N/A"}</Text>
+          {order.sweet && (
+            <Text style={styles.detailText}>Adoçante: {order.sweet}</Text>
+          )}
           <Text style={styles.detailText}>Tamanho: {order.size || "N/A"}</Text>
-          <Text style={styles.detailText}>Adoçante: {order.sweet || "N/A"}</Text>
-          <Text style={styles.detailText}>
-            Fruta: {order.fruit !== "none" ? order.fruit : "Nenhuma"}
-          </Text>
-          <Text style={styles.detailText}>
-            Acompanhamentos:
-            {order.sideDishes.length > 0
-              ? order.sideDishes.map(
-                  (dish, index) =>
-                    ` ${dish}${index < order.sideDishes.length - 1 ? "," : ""}`
-                )
-              : " Nenhum"}
-          </Text>
+          {order.fruit && (
+            <Text style={styles.detailText}>Fruta: {order.fruit}</Text>
+          )}
+          {Object.keys(order.sideDishes).length > 0 && (
+            <Text style={styles.detailText}>
+              Acompanhamentos:
+              {Object.entries(order.sideDishes)
+                .filter(([_, quantity]) => quantity > 0)
+                .map(([dishId, quantity]) => `\n\t\t\t${quantity}x ${dishId}`)}
+            </Text>
+          )}
           <Text style={styles.detailText}>
             Local de Consumo: {order.local || "N/A"}
           </Text>
@@ -59,5 +62,48 @@ const OrderSummary = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "space-between",
+  },
+  summaryContainer: {
+    backgroundColor: "#350E4D",
+    marginHorizontal: 20,
+    marginVertical: 20,
+    borderRadius: 16,
+    padding: 20,
+    alignItems: "center",
+  },
+  summaryDetails: {
+    alignSelf: "stretch",
+    marginBottom: 10,
+  },
+  detailText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+  },
+  totalText: {
+    color: "#FFFFFF",
+    fontSize: 24,
+    fontWeight: "bold",
+    marginTop: 5,
+  },
+  finalizeButton: {
+    backgroundColor: "#350E4D",
+    alignSelf: "center",
+    borderRadius: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginBottom: 90,
+  },
+  finalizeButtonText: {
+    color: "#FFFFFF",
+    fontSize: 40,
+    fontWeight: "bold",
+  },
+});
 
 export default OrderSummary;

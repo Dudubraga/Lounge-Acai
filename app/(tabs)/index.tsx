@@ -1,10 +1,28 @@
-import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { useOrder } from "../../context/OrderContext";
+import { Text, TextInput, View, Image, TouchableOpacity, StyleSheet, Dimensions, Alert } from "react-native";
+import { useState } from "react";
 import { useRouter } from "expo-router";
+import { useOrder } from "../../context/OrderContext";
 
 export default function Index() {
   const { setOrder } = useOrder();
   const router = useRouter();
+  
+  const screenWidth = Dimensions.get("window").width;
+  const teste = screenWidth > 600 ? 524 : 362;
+  const teste2 = screenWidth > 600 ? 522 : 361;
+
+  const [showPasswordInput, setShowPasswordInput] = useState(false);
+  const [password, setPassword] = useState("");
+
+  const handleAdminAccess = () => {
+    if (password === "123") {
+      setPassword("");
+      router.push("/Admin");
+    } else {
+      Alert.alert("Senha incorreta", "Por favor, tente novamente.");
+      setPassword("");
+    }
+  };
 
   const initializeOrder = () => {
     setOrder({
@@ -12,28 +30,45 @@ export default function Index() {
       orderType: "",
       size: "",
       sweet: "",
-      sideDishes: [],
+      sideDishes: {},
       fruit: "",
       local: "",
+      extraCharge: 0,
     });
-    router.push("/SelectOrder");
-  };
-
-  const goToAdmin = () => {
-    router.push("/Admin");
+    router.push("/Products");
   };
 
   return (
     <View style={styles.container}>
       {/* Admin Button */}
-      <TouchableOpacity style={styles.devButton} onPress={goToAdmin}>
+      <TouchableOpacity
+        style={styles.devButton}
+        onPress={() => setShowPasswordInput(!showPasswordInput)}
+      >
         <Text style={styles.devButtonText}>⚙</Text>
       </TouchableOpacity>
-
+      
+      {/* Password Input */}
+      {showPasswordInput && (
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Digite a senha"
+            placeholderTextColor="#888"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity style={styles.passwordButton} onPress={handleAdminAccess}>
+            <Text style={styles.passwordButtonText}>Entrar</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      
       {/* Logo */}
       <Image
         source={require("../../assets/images/lounge_logo.png")}
-        style={styles.logo}
+        style={[styles.logo, { width: teste, height: teste2 }]}
       />
 
       {/* Start Order Button */}
@@ -47,9 +82,9 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#350E4D",
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
   devButton: {
     position: "absolute",
@@ -61,20 +96,45 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
-    elevation: 5, // Android shadow
-    shadowColor: "#000", // iOS shadow
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    zIndex: 1,
+    elevation: 5,
   },
   devButtonText: {
     fontSize: 24,
     color: "#350E4D",
     fontWeight: "bold",
   },
+  passwordContainer: {
+    position: "absolute",
+    backgroundColor: "#FFFFFF",
+    top: 20,
+    left: 80,
+    right: 20,
+    padding: 20,
+    borderRadius: 10,
+    zIndex: 1,
+    elevation: 5,
+  },
+  passwordInput: {
+    borderWidth: 1,
+    borderColor: "#DDD",
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 10,
+    color: "#000",
+  },
+  passwordButton: {
+    backgroundColor: "#350E4D",
+    borderRadius: 8,
+    paddingVertical: 10,
+    alignItems: "center",
+  },
+  passwordButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
   logo: {
-    maxWidth: 524,
-    maxHeight: 522,
     marginBottom: 20,
   },
   button: {
