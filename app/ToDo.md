@@ -5,21 +5,15 @@
 🟩 Prioridade 4 (Livre) <br>
 
 ### 🟥 Preços
-- Adicionar o sistema de preços
-
-### 🟥 Telas de Suco/Vitamina
-- Sucos e Vitaminas não seguem o mesmo fluxo de páginas
-- Perguntar a Gilberto como fazer
+- Adicionar o sistema de preços por tamanho
 
 ### 🟧 Relatório Diário
-- Banco de Dados Local com SQLite
-    - INSERT → objeto OrderContext (pedido feito)
-    - SELECT → todos os objetos (ver todos os pedidos do dia)
-    - REMOVE → todos os objetos (reiniciar o banco)
+- Banco de Dados Local ? [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv)
 - Ver se Gilberto prefere reiniciar o Banco
     - Diariamente em um horário específico e qual seria
     - Manualmente quando ele quiser na página de ADM
-- Exportar esse Banco para o e-mail
+- Exportar esse Banco para o e-mail (ele vai precisar rotear internet pro tablet)
+    - Arquivo JSON -> Excel     
 
 ### 🟧 Bluetooth
 - Conectar o app ao bluetooth do tablet
@@ -37,7 +31,6 @@
 
 ### 🟨 Acompanhamentos Dinâmicos
 - Selecionar quais Acompanhamentos devem ser mostrados através da página de ADM
-- Banco de Dados ou não?
 
 ### 🟩 Ajustes de Design
 - Se achar algo feio
