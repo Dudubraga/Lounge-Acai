@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "LoungeAcai",
+    "slug": "LoungeAcai",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/lounge_logo.png",
@@ -21,7 +21,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/lounge_logo.png"
     },
     "plugins": [
       "expo-router",
@@ -33,8 +33,7 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ],
-      "expo-sqlite"
+      ]
     ],
     "experiments": {
       "typedRoutes": true
