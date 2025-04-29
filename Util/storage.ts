@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ORDER_DETAILS_KEY = '@orderDetails';
 
-// Salva o objeto completo do pedido no AsyncStorage
+// salva obj
 export const SaveOrderDetails = async (order: {
   total: number;
   orderType: string;
@@ -15,32 +15,32 @@ export const SaveOrderDetails = async (order: {
 }) => {
   try {
     await AsyncStorage.setItem(ORDER_DETAILS_KEY, JSON.stringify(order));
-    console.log('Pedido salvo com sucesso!');
+    console.log('Salvo');
   } catch (error) {
-    console.error('Erro ao salvar o pedido:', error);
+    console.error('erro ao salvar', error);
   }
 };
 
-// Recupera o objeto completo do pedido do AsyncStorage
+// recupera obj
 export const GetOrderDetails = async () => {
   try {
     const storedOrderDetails = await AsyncStorage.getItem(ORDER_DETAILS_KEY);
     if (storedOrderDetails) {
-      return JSON.parse(storedOrderDetails); // Converte de JSON para objeto
+      return JSON.parse(storedOrderDetails); // json -> obj
     }
-    return null; // Retorna null se não houver dados
+    return null; 
   } catch (error) {
-    console.error('Erro ao recuperar os detalhes do pedido:', error);
+    console.error('erro ao recuperar', error);
     return null;
   }
 };
 
-// Limpa o objeto completo do pedido do AsyncStorage
+// limpa obj
 export const ClearOrderDetails = async () => {
   try {
     await AsyncStorage.removeItem(ORDER_DETAILS_KEY);
-    console.log('Detalhes do pedido removidos com sucesso!');
+    console.log('removido');
   } catch (error) {
-    console.error('Erro ao limpar os detalhes do pedido:', error);
+    console.error('erro ao remover', error);
   }
 };

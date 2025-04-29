@@ -12,7 +12,7 @@
     - [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv) ?
     - [react-native-async-storage](https://github.com/react-native-async-storage/async-storage) ?
 - Ver se Gilberto prefere resetar o Banco
-    - Diariamente/semanalmente em um horário específico e qual seria
+    - Diariamente/semanalmente em um horário específico e qual seria(tablet nao tem horario)
     - Manualmente quando ele quiser na página de ADM
 - Exportar esse Banco para o e-mail (ele vai precisar rotear internet pro tablet)
     - Arquivo JSON -> Excel
