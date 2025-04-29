@@ -1,3 +1,8 @@
+import fruits from "@/data/fruits";
+import products from "@/data/products";
+import sizes from "@/data/sizes";
+import sweeteners from "@/data/sweeteners";
+import places from "@/data/places";
 import React, { createContext, useState, useContext } from "react";
 
 type Order = {
@@ -14,6 +19,7 @@ type Order = {
 type OrderContextType = {
   order: Order;
   setOrder: React.Dispatch<React.SetStateAction<Order>>;
+  calculateTotal: () => number;
 };
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -30,8 +36,35 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     extraCharge: 0,
   });
 
+  const calculateTotal = () => {
+    let total = 0;
+    
+    const product = products.find((p) => p.id === order.orderType);
+    if (product) total += product.price ||0;
+
+    const size = sizes.find((s) => s.id === order.size);
+    if (size) total += size.price;
+
+    const sweetener = sweeteners.find((s) => s.id === order.sweet);
+    if (sweetener) total += sweetener.price || 0;
+
+    const fruit = fruits.find((f) => f.id === order.fruit);
+    if (fruit) total += fruit.price || 0;
+
+    const place = places.find((p) => p.id === order.local);
+    if (place) total += place.price;
+    
+    total += order.extraCharge; //acompanhamentos
+
+    setOrder((prevOrder) => ({ ...prevOrder, total }));
+
+    return total;
+  }
+
+
+
   return (
-    <OrderContext.Provider value={{ order, setOrder }}>
+    <OrderContext.Provider value={{ order, setOrder, calculateTotal }}>
       {children}
     </OrderContext.Provider>
   );

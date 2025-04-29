@@ -3,6 +3,7 @@ import { useOrder } from "../../context/OrderContext";
 import { useRouter } from "expo-router";
 import TopSection from "../components/topSection";
 import BottomSection from "../components/bottomSection";
+import { SaveOrderDetails, ClearOrderDetails } from "../../Util/storage";
 
 const OrderSummary = () => {
   const { order } = useOrder();
@@ -13,16 +14,27 @@ const OrderSummary = () => {
     currency: "BRL",
   }).format(order.total);
 
-  const handleFinalizeOrder = () => {
-    Alert.alert(
-      "Pedido Realizado",
-      "Seu pedido foi realizado com sucesso!",
-      [{
-          text: "OK",
-          onPress: () => router.push("/"),
-      },]
-    );
+  const handleFinalizeOrder = async () => {
+    try {
+      await SaveOrderDetails(order); // Salva o pedido no AsyncStorage
+      Alert.alert(
+        "Pedido Realizado",
+        "Seu pedido foi realizado com sucesso!",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              ClearOrderDetails(); // Limpa os dados após finalizar
+              router.push("/");
+            },
+          },
+        ]
+      );
+    } catch (error) {
+      console.error("Erro ao finalizar o pedido:", error);
+    }
   };
+
 
   return (
     <View style={styles.container}>

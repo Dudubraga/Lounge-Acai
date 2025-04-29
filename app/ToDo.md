@@ -15,7 +15,10 @@
     - Diariamente/semanalmente em um horário específico e qual seria
     - Manualmente quando ele quiser na página de ADM
 - Exportar esse Banco para o e-mail (ele vai precisar rotear internet pro tablet)
-    - Arquivo JSON -> Excel     
+    - Arquivo JSON -> Excel
+
+    -criar arquivo fisico json 
+    -armazenar o objeto como um todo     
 
 ### 🟧 Bluetooth
 - Conectar o app ao bluetooth do tablet

@@ -4,9 +4,9 @@ export type Place = {
     price: number;
 }
 
-const fruits: Place[] = [
-    { id: "Local", image: require("../assets/images/local.png"), price: 0 },
+const places: Place[] = [
+    { id: "Local", image: require("../assets/images/local.png"), price: 0.0 },
     { id: "Viagem", image: require("../assets/images/viagem.png"), price: 1.5 },
 ];
 
-export default fruits;
+export default places;
