@@ -24,6 +24,7 @@
 - Conectar o app ao bluetooth do tablet
 - Selecionar o dispositvo de impressão na página de ADM
 - Imprimir
+-Sugestao Marcos(fazer outro app pra tela de adm) pedabliueme
 
 ### 🟨 Documentação do Projeto
 - Descrição do propósito e objetivos do sistema
