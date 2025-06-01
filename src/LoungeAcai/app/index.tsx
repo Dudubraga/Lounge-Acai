@@ -29,8 +29,6 @@ export default function Index() {
     setAdminClicks((prev) => {
       const next = prev + 1;
       if (next >= 5) {
-        // Rode isso uma vez para limpar tudo
-        AsyncStorage.clear();
         router.push("./(tabs)/adminPage");
         return 0; // reseta o contador após acessar
       }
