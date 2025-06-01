@@ -134,14 +134,11 @@ export default function AdminPage() {
     }
     console.log("handleSendReport: Arquivo de relatório confirmado. Existe:", fileInfo.exists, "Tamanho:", fileInfo.size);
 
-    // O bloco de teste "SEM ANEXO" que causava o erro foi removido.
-    // Agora vamos tentar enviar o email COM o anexo, que é o objetivo principal.
-
     console.log("handleSendReport: Tentando compor o email COM anexo...");
     const result = await MailComposer.composeAsync({
       recipients: ["blablou32123@gmail.com"], // SUBSTITUIR PELO EMAIL REAL DE DESTINO
       subject: `Relatório de Pedidos - Lounge do Açaí - ${new Date().toLocaleDateString('pt-BR')}`,
-      body: "Olá,\n\nSegue em anexo o relatório de pedidos gerado pelo sistema de autoatendimento.\n\nAtenciosamente,\nSistema Lounge do Açaí",
+      body: undefined,
       attachments: [fileUri], // URI do arquivo de relatório como um array
     });
     console.log("handleSendReport: Resultado do MailComposer.composeAsync (com anexo):", result);
