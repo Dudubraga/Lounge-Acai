@@ -1,15 +1,14 @@
 // src/LoungeAcai/app/(tabs)/adminPage.tsx
-import React, { useState, useEffect, useCallback } from "react"; // Adicionado useCallback
-import { View, Text, Switch, ScrollView, TouchableOpacity, StyleSheet, Alert } from "react-native"; // Adicionado Alert
+import React, { useState, useEffect, useCallback } from "react";
+import { View, Text, Switch, ScrollView, TouchableOpacity, StyleSheet, Alert, Platform } from "react-native"; // Adicionado Alert e Platform
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { products, extraFruits, sideOptions } from "../../data/menu";
 import { useRouter } from "expo-router";
 import TopSection from "../components/topSection";
-import { useIsFocused } from '@react-navigation/native'; // Importar hook
+import { useIsFocused } from '@react-navigation/native';
 
-// Para funcionalidade de email (opcional, requer expo-file-system e expo-mail-composer)
-// import * as MailComposer from 'expo-mail-composer';
-// import * as FileSystem from 'expo-file-system';
+import * as MailComposer from 'expo-mail-composer'; // Importar MailComposer
+import * as FileSystem from 'expo-file-system'; // Importar FileSystem
 
 const STORAGE_KEYS = {
   products: "availability_products",
@@ -23,11 +22,9 @@ export default function AdminPage() {
   const [fruitAvailability, setFruitAvailability] = useState<Record<string, boolean>>({});
   const [sideAvailability, setSideAvailability] = useState<Record<string, boolean>>({});
   const router = useRouter();
-  const isFocused = useIsFocused(); // Hook para verificar se a tela está em foco
+  const isFocused = useIsFocused();
 
-  // Função para carregar e mesclar disponibilidade
   const loadAndMergeAvailability = useCallback(async () => {
-    // console.log("AdminPage: loadAndMergeAvailability called");
     try {
       const initialProductAvailability = Object.fromEntries(products.map(p => [p.id, p.available]));
       const initialFruitAvailability = Object.fromEntries(extraFruits.map(f => [f.id, f.available]));
@@ -46,23 +43,19 @@ export default function AdminPage() {
       setSideAvailability({ ...initialSideAvailability, ...storedSide });
     } catch (error) {
       console.error("AdminPage: Failed to load availability from AsyncStorage", error);
-      // Fallback para os padrões do menu.ts
       setProductAvailability(Object.fromEntries(products.map((p) => [p.id, p.available])));
       setFruitAvailability(Object.fromEntries(extraFruits.map((f) => [f.id, f.available])));
       setSideAvailability(Object.fromEntries(sideOptions.map((s) => [s.id, s.available])));
     }
-  }, []); // useCallback para evitar recriações desnecessárias
+  }, []);
 
-  // Carrega na montagem inicial e quando a tela ganha foco
   useEffect(() => {
     if (isFocused) {
       loadAndMergeAvailability();
     }
   }, [isFocused, loadAndMergeAvailability]);
 
-  // Salva a disponibilidade do produto quando ela muda
   useEffect(() => {
-    // Não salvar se o objeto estiver vazio (estado inicial antes do primeiro load)
     if (Object.keys(productAvailability).length > 0) {
         AsyncStorage.setItem(STORAGE_KEYS.products, JSON.stringify(productAvailability)).catch(error =>
         console.error("Failed to save product availability", error)
@@ -70,7 +63,6 @@ export default function AdminPage() {
     }
   }, [productAvailability]);
 
-  // Salva a disponibilidade de frutas quando ela muda
   useEffect(() => {
     if (Object.keys(fruitAvailability).length > 0) {
         AsyncStorage.setItem(STORAGE_KEYS.fruits, JSON.stringify(fruitAvailability)).catch(error =>
@@ -79,7 +71,6 @@ export default function AdminPage() {
     }
   }, [fruitAvailability]);
 
-  // Salva a disponibilidade de acompanhamentos quando ela muda
   useEffect(() => {
     if (Object.keys(sideAvailability).length > 0) {
         AsyncStorage.setItem(STORAGE_KEYS.sides, JSON.stringify(sideAvailability)).catch(error =>
@@ -98,46 +89,61 @@ export default function AdminPage() {
   const handleViewReport = () => router.push("./relatorioPage");
 
   const handleSendReport = async () => {
-    Alert.alert("Implementação Futura", "Funcionalidade de enviar relatório por email ainda será implementada.");
-    // Conceito:
-    // const isMailAvailable = await MailComposer.isAvailableAsync();
-    // if (!isMailAvailable) {
-    //   Alert.alert("Erro", "Serviço de email não disponível neste dispositivo.");
-    //   return;
-    // }
-    // try {
-    //   const pedidosJson = await AsyncStorage.getItem(STORAGE_KEYS.orders);
-    //   if (!pedidosJson || pedidosJson === "[]") {
-    //     Alert.alert("Info", "Nenhum pedido registrado para enviar.");
-    //     return;
-    //   }
-    //   const filePath = `${FileSystem.cacheDirectory}relatorio_pedidos.json`;
-    //   await FileSystem.writeAsStringAsync(filePath, pedidosJson, { encoding: FileSystem.EncodingType.UTF8 });
-    //   await MailComposer.composeAsync({
-    //     recipients: ["emaildogilberto@example.com"], // Substituir pelo email real
-    //     subject: "Relatório de Pedidos - Lounge do Açaí",
-    //     body: "Segue em anexo o relatório de pedidos.",
-    //     attachments: [filePath],
-    //   });
-    // } catch (error) {
-    //   console.error("Erro ao enviar relatório por email:", error);
-    //   Alert.alert("Erro", "Não foi possível preparar ou enviar o relatório por email.");
-    // }
+    const isMailAvailable = await MailComposer.isAvailableAsync();
+    if (!isMailAvailable) {
+      Alert.alert(
+        "Email Indisponível",
+        "Não há um aplicativo de email configurado neste dispositivo para enviar o relatório."
+      );
+      return;
+    }
+
+    try {
+      const pedidosJson = await AsyncStorage.getItem(STORAGE_KEYS.orders);
+      if (!pedidosJson || pedidosJson === "[]") {
+        Alert.alert("Relatório Vazio", "Não há pedidos registrados para enviar.");
+        return;
+      }
+
+      // Define o nome e o caminho do arquivo
+      const filename = "relatorio_pedidos_lounge_acai.json";
+      // Para Android, o cacheDirectory é uma boa opção. Para iOS, documentDirectory pode ser mais persistente se necessário, mas cache é ok para anexos.
+      const fileUri = `${FileSystem.cacheDirectory}${filename}`;
+
+      // Escreve os dados JSON no arquivo
+      await FileSystem.writeAsStringAsync(fileUri, pedidosJson, {
+        encoding: FileSystem.EncodingType.UTF8,
+      });
+
+      // Compõe o email
+      await MailComposer.composeAsync({
+        recipients: ["blablou32123@gmail.com"], // SUBSTITUIR PELO EMAIL REAL DE GILBERTO
+        subject: `Relatório de Pedidos - Lounge do Açaí - ${new Date().toLocaleDateString('pt-BR')}`,
+        body: "Olá,\n\nSegue em anexo o relatório de pedidos gerado pelo sistema de autoatendimento.\n\nAtenciosamente,\nSistema Lounge do Açaí",
+        attachments: [fileUri],
+      });
+
+      Alert.alert("Email", "Aplicativo de email aberto com o relatório anexado.");
+
+    } catch (error: any) {
+      console.error("Erro ao enviar relatório por email:", error);
+      Alert.alert("Erro ao Enviar", `Não foi possível preparar ou enviar o relatório por email. Detalhes: ${error.message}`);
+    }
   };
   
   const handleClearOrders = async () => {
     Alert.alert(
-      "Confirmar",
+      "Confirmar Limpeza",
       "Tem certeza que deseja limpar TODOS os pedidos do relatório? Esta ação não pode ser desfeita.",
       [
         { text: "Cancelar", style: "cancel" },
         {
-          text: "Limpar",
+          text: "Limpar Pedidos",
           style: "destructive",
           onPress: async () => {
             try {
               await AsyncStorage.removeItem(STORAGE_KEYS.orders);
-              Alert.alert("Sucesso", "Relatório de pedidos limpo!");
+              Alert.alert("Sucesso!", "Relatório de pedidos limpo com sucesso.");
             } catch (error) {
               console.error("Failed to clear orders", error);
               Alert.alert("Erro", "Não foi possível limpar o relatório de pedidos.");
@@ -150,12 +156,12 @@ export default function AdminPage() {
   
   const handleResetAvailability = async () => {
     Alert.alert(
-      "Confirmar",
-      "Tem certeza que deseja resetar TODAS as disponibilidades para os padrões de fábrica? Os itens voltarão à sua disponibilidade original.",
+      "Confirmar Reset",
+      "Tem certeza que deseja resetar TODAS as disponibilidades para os padrões originais? Itens voltarão à sua configuração inicial de disponibilidade.",
       [
         { text: "Cancelar", style: "cancel" },
         {
-          text: "Resetar",
+          text: "Resetar Disponibilidade",
           style: "destructive",
           onPress: async () => {
             try {
@@ -170,7 +176,7 @@ export default function AdminPage() {
               setProductAvailability(defaultProd);
               setFruitAvailability(defaultFruit);
               setSideAvailability(defaultSide);
-              Alert.alert("Sucesso", "Disponibilidade resetada para os padrões!");
+              Alert.alert("Sucesso!", "Disponibilidade resetada para os padrões!");
             } catch (error) {
               console.error("Failed to reset availability", error);
               Alert.alert("Erro", "Não foi possível resetar a disponibilidade.");
@@ -208,7 +214,7 @@ export default function AdminPage() {
           <View key={p.id} style={styles.itemRow}>
             <Text style={styles.itemName}>{p.name}</Text>
             <Switch
-              value={productAvailability[p.id] ?? p.available} // Usa o valor do estado ou o padrão do menu
+              value={productAvailability[p.id] ?? p.available}
               onValueChange={() => toggleProduct(p.id)}
               trackColor={{ false: "#767577", true: "#8BC34A" }}
               thumbColor={ (productAvailability[p.id] ?? p.available) ? "#f4f3f4" : "#f4f3f4"}
@@ -221,7 +227,7 @@ export default function AdminPage() {
           <View key={f.id} style={styles.itemRow}>
             <Text style={styles.itemName}>{f.name}</Text>
             <Switch
-              value={fruitAvailability[f.id] ?? f.available} // Usa o valor do estado ou o padrão do menu
+              value={fruitAvailability[f.id] ?? f.available}
               onValueChange={() => toggleFruit(f.id)}
               trackColor={{ false: "#767577", true: "#8BC34A" }}
               thumbColor={ (fruitAvailability[f.id] ?? f.available) ? "#f4f3f4" : "#f4f3f4"}
@@ -234,10 +240,10 @@ export default function AdminPage() {
           <View key={s.id} style={styles.itemRow}>
             <Text style={styles.itemName}>{s.name}</Text>
             <Switch
-              value={sideAvailability[s.id] ?? s.available} // Usa o valor do estado ou o padrão do menu
+              value={sideAvailability[s.id] ?? s.available}
               onValueChange={() => toggleSide(s.id)}
-              trackColor={{ false: "#767577", true: "#8BC34A" }} // Verde quando ativo
-              thumbColor={ (sideAvailability[s.id] ?? s.available) ? "#f4f3f4" : "#f4f3f4"} // Cor do "botão" do switch
+              trackColor={{ false: "#767577", true: "#8BC34A" }}
+              thumbColor={ (sideAvailability[s.id] ?? s.available) ? "#f4f3f4" : "#f4f3f4"}
             />
           </View>
         ))}
@@ -246,55 +252,59 @@ export default function AdminPage() {
   );
 }
 
+// Seus estilos permanecem os mesmos, apenas garanta que `destructiveButton` e `warningButton` estejam definidos
 const styles = StyleSheet.create({
   container: {
     padding: 24,
     backgroundColor: "#fff",
-    paddingBottom: 60,
+    paddingBottom: 80, // Aumentado para dar mais espaço aos botões e listas
   },
   sectionTitle: {
     fontSize: 22,
     fontWeight: "bold",
     marginTop: 24,
-    marginBottom: 8,
+    marginBottom: 12, // Aumentado
     color: "#350E4D",
   },
   itemRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 12,
+    paddingVertical: 14, // Aumentado
     borderBottomWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: "#EAEAEA", // Mais suave
   },
   itemName: {
     fontSize: 18,
     color: "#333",
     flex: 1,
-    marginRight: 8, // Adiciona espaço entre o nome e o switch
+    marginRight: 10, // Aumentado
   },
   button: {
     backgroundColor: "#350E4D",
-    padding: 16,
-    borderRadius: 10,
-    marginTop: 15,
+    paddingVertical: 16, // Aumentado
+    paddingHorizontal: 20,
+    borderRadius: 12, // Mais arredondado
+    marginTop: 18, // Aumentado
     alignItems: "center",
-    elevation: 2,
+    elevation: 3, // Sombra mais pronunciada
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
   },
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 17, // Ligeiramente menor para caber melhor
   },
-   destructiveButton: {
-    backgroundColor: "#C70039",
+  destructiveButton: {
+    backgroundColor: "#D32F2F", // Vermelho mais padrão para destrutivo
   },
   warningButton: {
-    backgroundColor: "#C70039",
-     color: "#000", // Texto escuro para melhor contraste em botão amarelo
+    backgroundColor: "#FFA000", // Laranja para aviso
   },
+  warningButtonText: {
+    color: "#000", // ou #fff dependendo do tom do amarelo/laranja
+  }
 });
