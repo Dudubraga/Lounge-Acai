@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="17cfa12c-7318-4e78-bdf2-45e38996d358" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/config.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/AndroidProjectSystem.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/migrations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/InstructionsExpo.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/Admin.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/ChooseSize.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/Fruits.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/OrderSummary.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/Products.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/SideDishes.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/WaysToSweeten.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/WhereToEat.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ToDo.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/_layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/bottomSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/topSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/fonts/SpaceMono-Regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/acai-cupuacu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/acai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/adaptive-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/back-arrow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/cupuacu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/demerara.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/kiwi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/local.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/lounge_logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/manga.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/mascavo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/mel.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/morango.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/none.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/splash-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/suco.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/tamanho200ml.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/tamanho300ml.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/tamanho400ml.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/tamanho500ml.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/tamanho750ml.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/viagem.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/vitamina.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/xarope.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/xilitol.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/context/OrderContext.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/fruits.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/places.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/products.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/sideDishes.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/sizes.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/sweeteners.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eas.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2xtYUA5a6FpQ0C4wVej1ZBzdTA6" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "newSDK",
+    "kotlin-language-version-configured": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="17cfa12c-7318-4e78-bdf2-45e38996d358" name="Changes" comment="" />
+      <created>1748758851557</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1748758851557</updated>
+    </task>
+    <servers />
+  </component>
+</project>
