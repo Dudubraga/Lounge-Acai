@@ -43,29 +43,40 @@ export default function Summary() {
             {draft.size ? `${draft.size}ml` : "-"}
           </Text>
         </Text>
-        <Text style={styles.summaryTitle}>Acompanhamentos:</Text>
-        {draft.sideDishes.length > 0 ? (
-          draft.sideDishes.map((s, idx) => (
-            <Text key={s.name} style={styles.summaryValue}>
-              {"\t\t"}• {s.name}
+        {/* Só mostra acompanhamentos se houver algum */}
+        {draft.sideDishes.length > 0 && (
+          <>
+            <Text style={styles.summaryTitle}>Acompanhamentos:</Text>
+            {draft.sideDishes.map((s) => (
+              <Text key={s.name} style={styles.summaryValue}>
+                {"\t\t"}• {s.name}
+              </Text>
+            ))}
+          </>
+        )}
+        {/* Só mostra frutas se houver alguma */}
+        {draft.fruits.length > 0 && (
+          <Text style={styles.summaryLine}>
+            <Text style={styles.summaryTitle}>Frutas: </Text>
+            <Text style={styles.summaryValue}>
+              {draft.fruits.map((f) => f.name).join(", ")}
             </Text>
-          ))
-        ) : (
-          <Text style={styles.summaryValue}>-</Text>
+          </Text>
+        )}
+        {/* Só mostra local se houver */}
+        {draft.place && (
+          <Text style={styles.summaryLine}>
+            <Text style={styles.summaryTitle}>Local: </Text>
+            <Text style={styles.summaryValue}>
+              {draft.place.charAt(0).toUpperCase() + draft.place.slice(1)}
+            </Text>
+          </Text>
         )}
         <Text style={styles.summaryLine}>
-          <Text style={styles.summaryTitle}>Frutas: </Text>
-          <Text style={styles.summaryValue}>{draft.fruits.map((f) => f.name).join(", ") || "-"}</Text>
-        </Text>
-        <Text style={styles.summaryLine}>
-          <Text style={styles.summaryTitle}>Local: </Text>
-          <Text style={styles.summaryValue}>
-            {draft.place ? draft.place.charAt(0).toUpperCase() + draft.place.slice(1) : "-"}
-          </Text>
-        </Text>
-        <Text style={styles.summaryLine}>
           <Text style={styles.summaryTitle}>Total: </Text>
-          <Text style={styles.summaryValue}>R$ {total.toFixed(2).replace(".", ",")}</Text>
+          <Text style={styles.summaryValue}>
+            R$ {total.toFixed(2).replace(".", ",")}
+          </Text>
         </Text>
       </View>
       <TouchableOpacity style={styles.finishButton} onPress={handleFinish}>

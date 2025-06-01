@@ -21,6 +21,8 @@ export default function ChooseSize() {
   const { setSize, draft } = useOrder();
   const [selected, setSelected] = useState<number | null>(null);
   const total = calculateOrderTotal(draft);
+  const [showWarning, setShowWarning] = useState(false);
+
   const screenWidth = Dimensions.get("window").width;
   const isTablet = screenWidth >= 700;
   const imageSize = isTablet ? 140 : 90;
@@ -39,7 +41,11 @@ export default function ChooseSize() {
   };
 
   const handleContinue = () => {
-    if (!selected) return;
+    if (!selected) {
+      setShowWarning(true);
+      return;
+    }
+    setShowWarning(false);
     setSize(selected as any);
     router.push("./sideDishes");
   };
@@ -74,6 +80,9 @@ export default function ChooseSize() {
           </TouchableOpacity>
         ))}
       </View>
+      {showWarning && (
+        <Text style={styles.warningText}>Selecione uma opção</Text>
+      )}
       <BottomSection total={total} continueOrder={handleContinue} />
     </View>
   );
@@ -124,5 +133,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 2,
+  },
+  warningText: {
+    color: "red",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 16,
   },
 });

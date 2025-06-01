@@ -1,5 +1,5 @@
 - perguntar a gilberto se pode pedir varias vezes o mesmo acompanhamento
-- os mostrar no resumo se não for nullo (tirar o "-")
+- os mostrar no resumo se não for nulo (tirar o "-")
 
 ### 🟥 Telas
 - pagina de admin

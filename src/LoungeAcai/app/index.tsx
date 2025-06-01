@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, Image, TextInput, Alert } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useRouter } from "expo-router";
 import { useOrder } from "../context/orderContext";
 import { calculateOrderTotal } from "../utils/calculateOrderTotal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Index() {
   const router = useRouter();
@@ -28,6 +29,8 @@ export default function Index() {
     setAdminClicks((prev) => {
       const next = prev + 1;
       if (next >= 5) {
+        // Rode isso uma vez para limpar tudo
+        AsyncStorage.clear();
         router.push("./(tabs)/adminPage");
         return 0; // reseta o contador após acessar
       }

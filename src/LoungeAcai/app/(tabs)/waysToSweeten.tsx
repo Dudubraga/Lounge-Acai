@@ -22,6 +22,7 @@ export default function WaysToSweeten() {
   const { setSweetener, draft } = useOrder();
   const [selected, setSelected] = useState<SweetenerType | null>(null);
   const [total, setTotal] = useState(() => calculateOrderTotal(draft));
+  const [showWarning, setShowWarning] = useState(false);
 
   useEffect(() => {
     if (selected) {
@@ -37,7 +38,11 @@ export default function WaysToSweeten() {
   }, [selected, draft]);
 
   const handleContinue = () => {
-    if (!selected) return;
+    if (!selected) {
+      setShowWarning(true);
+      return;
+    }
+    setShowWarning(false);
     setSweetener(selected);
     router.push("./chooseSize");
   };
@@ -64,6 +69,9 @@ export default function WaysToSweeten() {
           </TouchableOpacity>
         ))}
       </ScrollView>
+      {showWarning && (
+        <Text style={styles.warningText}>Selecione uma opção</Text>
+      )}
       <BottomSection total={total} continueOrder={handleContinue} />
     </View>
   );
@@ -110,5 +118,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  warningText: {
+    color: "red",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 16,
   },
 });

@@ -19,6 +19,7 @@ export default function WhereToEat() {
   const [selected, setSelected] = useState<PlaceType | null>(null);
   const [total, setTotal] = useState(() => calculateOrderTotal(draft));
   const { width } = useWindowDimensions();
+  const [showWarning, setShowWarning] = useState(false);
 
   useEffect(() => {
     if (selected) {
@@ -42,7 +43,11 @@ export default function WhereToEat() {
   type PlaceImageKey = keyof typeof placeImages;
 
   const handleContinue = () => {
-    if (!selected) return;
+    if (!selected) {
+      setShowWarning(true);
+      return;
+    }
+    setShowWarning(false);
     setPlace(selected as any);
     router.push("./summary");
   };
@@ -76,6 +81,9 @@ export default function WhereToEat() {
           </TouchableOpacity>
         ))}
       </View>
+      {showWarning && (
+        <Text style={styles.warningText}>Selecione uma opção</Text>
+      )}
       <BottomSection total={total} continueOrder={handleContinue} />
     </View>
   );
@@ -113,5 +121,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  warningText: {
+    color: "red",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 16,
   },
 });

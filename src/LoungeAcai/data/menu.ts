@@ -11,12 +11,14 @@ export interface Product {
   type: "acai" | "cupuaçu" | "suco" | "vitamina" | "meio-a-meio";
   sweetener?: "sem-acucar" | "xarope" | "xilitol" | "demerara" | "mascavo" | "mel";
   prices: ProductPrice[];
+  available: boolean;
 }
 
 export interface SideOption {
   id: string;
   name: string;
   extraPrice?: number;
+  available: boolean;
 }
 
 export const products: Product[] = [
@@ -32,6 +34,7 @@ export const products: Product[] = [
     ],
     type: "acai",
     sweetener: "xarope",
+    available: true,
   },
   {
     id: "acai-demerara",
@@ -45,6 +48,7 @@ export const products: Product[] = [
     ],
     type: "acai",
     sweetener: "demerara",
+    available: true,
   },
   {
     id: "acai-mascavo",
@@ -58,6 +62,7 @@ export const products: Product[] = [
     ],
     type: "acai",
     sweetener: "mascavo",
+    available: true,
   },
   {
     id: "acai-mel",
@@ -71,6 +76,7 @@ export const products: Product[] = [
     ],
     type: "acai",
     sweetener: "mel",
+    available: true,
   },
   {
     id: "acai-sem-acucar",
@@ -84,6 +90,7 @@ export const products: Product[] = [
     ],
     type: "acai",
     sweetener: "sem-acucar",
+    available: true,
   },
   {
     id: "acai-xilitol",
@@ -97,6 +104,7 @@ export const products: Product[] = [
     ],
     type: "acai",
     sweetener: "xilitol",
+    available: true,
   },
   {
     id: "cupuacu",
@@ -109,6 +117,7 @@ export const products: Product[] = [
       { size: 750, price: 34.5 },
     ],
     type: "cupuaçu",
+    available: true,
   },
   {
     id: "meio-a-meio",
@@ -121,37 +130,40 @@ export const products: Product[] = [
       { size: 750, price: 33 },
     ],
     type: "meio-a-meio",
+    available: true,
   },
   {
     id: "suco-acai",
     name: "Suco de Açaí ou Cupuaçu",
     prices: [{ size: 500, price: 13 }],
     type: "suco",
+    available: true,
   },
   {
     id: "vitamina-acai",
     name: "Vitamina de Açaí ou Cupuaçu",
     prices: [{ size: 500, price: 15 }],
     type: "vitamina",
+    available: true,
   },
 ];
 
 export const sideOptions: SideOption[] = [
-  { id: "granola", name: "Granola" },
-  { id: "amendoim-triturado", name: "Amendoim triturado" },
-  { id: "sucrilhos", name: "Sucrilhos" },
-  { id: "farinha-amendoim", name: "Farinha de Amendoim" },
-  { id: "leite-po", name: "Leite em Pó" },
-  { id: "farinha-lactea", name: "Farinha Láctea" },
-  { id: "farinha-castanha", name: "Farinha de Castanha" },
-  { id: "amendoim", name: "Amendoim" },
-  { id: "mel", name: "Mel" },
-  { id: "bolinha-nescau", name: "Bolinha de Nescau" },
-  { id: "aveia", name: "Aveia" },
+  { id: "granola", name: "Granola", available: true },
+  { id: "amendoim-triturado", name: "Amendoim triturado", available: true },
+  { id: "sucrilhos", name: "Sucrilhos", available: true },
+  { id: "farinha-amendoim", name: "Farinha de Amendoim", available: true },
+  { id: "leite-po", name: "Leite em Pó", available: true },
+  { id: "farinha-lactea", name: "Farinha Láctea", available: true },
+  { id: "farinha-castanha", name: "Farinha de Castanha", available: true },
+  { id: "amendoim", name: "Amendoim", available: true },
+  { id: "mel", name: "Mel", available: true },
+  { id: "bolinha-nescau", name: "Bolinha de Nescau", available: true },
+  { id: "aveia", name: "Aveia", available: true },
 ];
 
 export const extraFruits: SideOption[] = [
-  { id: "morango", name: "Morango", extraPrice: 4 },
-  { id: "manga", name: "Manga", extraPrice: 4 },
-  { id: "kiwi", name: "Kiwi", extraPrice: 4 },
+  { id: "morango", name: "Morango", extraPrice: 4, available: true },
+  { id: "manga", name: "Manga", extraPrice: 4, available: true },
+  { id: "kiwi", name: "Kiwi", extraPrice: 4, available: true },
 ];

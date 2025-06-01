@@ -7,12 +7,14 @@ import { extraFruits } from "../../data/menu";
 import { fruitImages } from "../../data/images";
 import { useOrder } from "../../context/orderContext";
 import { calculateOrderTotal } from "../../utils/calculateOrderTotal";
+import { getAvailability } from "../../utils/availability";
 
 export default function ChooseFruits() {
   const router = useRouter();
   const { setFruits, draft } = useOrder();
   const [selected, setSelected] = useState<string[]>([]);
   const [total, setTotal] = useState(() => calculateOrderTotal(draft));
+  const [fruitAvailability, setFruitAvailability] = useState<Record<string, boolean>>({});
   const { width } = useWindowDimensions();
 
   // Atualiza o total ao selecionar frutas
@@ -24,6 +26,17 @@ export default function ChooseFruits() {
       })
     );
   }, [selected, draft]);
+
+  // Exemplo para frutas
+  useEffect(() => {
+    getAvailability().then((data) => {
+      if (Object.keys(data.fruits).length === 0) {
+        setFruitAvailability(Object.fromEntries(extraFruits.map((f) => [f.id, true])));
+      } else {
+        setFruitAvailability(data.fruits);
+      }
+    });
+  }, []);
 
   // Responsivo: diminui tamanho dos cards em telas menores
   const isPhone = width < 700;
@@ -49,7 +62,7 @@ export default function ChooseFruits() {
     <View style={styles.container}>
       <TopSection title="Adicionar frutas?" />
       <ScrollView contentContainerStyle={styles.fruitsContainer}>
-        {extraFruits.map((fruit) => (
+        {extraFruits.filter(f => fruitAvailability[f.id]).map((fruit) => (
           <TouchableOpacity
             key={fruit.id}
             style={[

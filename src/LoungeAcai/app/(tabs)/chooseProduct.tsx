@@ -6,6 +6,8 @@ import { useRouter } from "expo-router";
 import { productTypeImages } from "../../data/images";
 import { useOrder } from "../../context/orderContext";
 import { calculateOrderTotal } from "../../utils/calculateOrderTotal";
+import { products } from "../../data/menu";
+import { getAvailability } from "../../utils/availability";
 
 const PRODUCT_TYPES = [
   { type: "acai", label: "Açaí", imageKey: "acai" },
@@ -20,6 +22,8 @@ export default function ChooseProduct() {
   const { setType, draft } = useOrder();
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [total, setTotal] = useState(() => calculateOrderTotal(draft));
+  const [showWarning, setShowWarning] = useState(false);
+  const [availability, setAvailability] = useState<Record<string, boolean>>({});
 
   // Atualiza o draft localmente para simular a seleção antes de avançar
   useEffect(() => {
@@ -28,7 +32,7 @@ export default function ChooseProduct() {
         calculateOrderTotal({
           ...draft,
           type: selectedType as any,
-          sweetener: undefined, // limpa adoçante ao trocar tipo
+          sweetener: undefined,
           size: undefined,
           sideDishes: [],
           fruits: [],
@@ -40,8 +44,26 @@ export default function ChooseProduct() {
     }
   }, [selectedType, draft]);
 
+  useEffect(() => {
+    getAvailability().then((data) => {
+      console.log("Disponibilidade produtos:", data.products);
+      console.log("Disponibilidade frutas:", data.fruits);
+      console.log("Disponibilidade acompanhamentos:", data.sides);
+      // Se não houver nada salvo, usa todos como true
+      if (Object.keys(data.products).length === 0) {
+        setAvailability(Object.fromEntries(products.map((p) => [p.id, true])));
+      } else {
+        setAvailability(data.products);
+      }
+    });
+  }, []);
+
   const handleContinue = () => {
-    if (!selectedType) return;
+    if (!selectedType) {
+      setShowWarning(true);
+      return;
+    }
+    setShowWarning(false);
     setType(selectedType as any);
 
     if (selectedType === "acai") {
@@ -54,11 +76,19 @@ export default function ChooseProduct() {
   };
 
   type ProductTypeImageKey = keyof typeof productTypeImages;
+
+  // Filtra os tipos de produto que têm pelo menos um produto disponível
+  const availableProductTypes = PRODUCT_TYPES.filter((typeObj) =>
+    products.some(
+      (p) => p.type === typeObj.type && availability[p.id]
+    )
+  );
+
   return (
     <View style={styles.container}>
       <TopSection title="Escolha seu produto" />
       <ScrollView contentContainerStyle={styles.productsContainer}>
-        {PRODUCT_TYPES.map((item) => (
+        {availableProductTypes.map((item) => (
           <TouchableOpacity
             key={item.type}
             style={[
@@ -83,6 +113,9 @@ export default function ChooseProduct() {
           </TouchableOpacity>
         ))}
       </ScrollView>
+      {showWarning && (
+        <Text style={styles.warningText}>Selecione uma opção</Text>
+      )}
       <BottomSection total={total} continueOrder={handleContinue} />
     </View>
   );
@@ -132,5 +165,12 @@ const styles = StyleSheet.create({
   },
   selectedProductName: {
     textDecorationLine: "underline",
+  },
+  warningText: {
+    color: "red",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 16,
   },
 });
