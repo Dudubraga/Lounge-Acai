@@ -89,47 +89,83 @@ export default function AdminPage() {
   const handleViewReport = () => router.push("./relatorioPage");
 
   const handleSendReport = async () => {
-    const isMailAvailable = await MailComposer.isAvailableAsync();
-    if (!isMailAvailable) {
-      Alert.alert(
-        "Email Indisponível",
-        "Não há um aplicativo de email configurado neste dispositivo para enviar o relatório."
-      );
+  console.log("handleSendReport: Iniciando envio do relatório...");
+
+  const isMailAvailable = await MailComposer.isAvailableAsync();
+  if (!isMailAvailable) {
+    Alert.alert(
+      "Email Indisponível",
+      "Não há um aplicativo de email configurado neste dispositivo para enviar o relatório."
+    );
+    console.log("handleSendReport: MailComposer não disponível.");
+    return;
+  }
+  console.log("handleSendReport: MailComposer está disponível.");
+
+  try {
+    const pedidosJson = await AsyncStorage.getItem(STORAGE_KEYS.orders);
+    if (!pedidosJson || pedidosJson === "") {
+      Alert.alert("Relatório Vazio", "Não há pedidos registrados para enviar.");
+      console.log("handleSendReport: Nenhum pedido encontrado no AsyncStorage.");
       return;
     }
+    console.log("handleSendReport: Pedidos carregados do AsyncStorage (primeiros 100 chars):", pedidosJson.substring(0, 100));
 
-    try {
-      const pedidosJson = await AsyncStorage.getItem(STORAGE_KEYS.orders);
-      if (!pedidosJson || pedidosJson === "[]") {
-        Alert.alert("Relatório Vazio", "Não há pedidos registrados para enviar.");
-        return;
-      }
-
-      // Define o nome e o caminho do arquivo
-      const filename = "relatorio_pedidos_lounge_acai.json";
-      // Para Android, o cacheDirectory é uma boa opção. Para iOS, documentDirectory pode ser mais persistente se necessário, mas cache é ok para anexos.
-      const fileUri = `${FileSystem.cacheDirectory}${filename}`;
-
-      // Escreve os dados JSON no arquivo
-      await FileSystem.writeAsStringAsync(fileUri, pedidosJson, {
-        encoding: FileSystem.EncodingType.UTF8,
-      });
-
-      // Compõe o email
-      await MailComposer.composeAsync({
-        recipients: ["blablou32123@gmail.com"], // SUBSTITUIR PELO EMAIL REAL DE GILBERTO
-        subject: `Relatório de Pedidos - Lounge do Açaí - ${new Date().toLocaleDateString('pt-BR')}`,
-        body: "Olá,\n\nSegue em anexo o relatório de pedidos gerado pelo sistema de autoatendimento.\n\nAtenciosamente,\nSistema Lounge do Açaí",
-        attachments: [fileUri],
-      });
-
-      Alert.alert("Email", "Aplicativo de email aberto com o relatório anexado.");
-
-    } catch (error: any) {
-      console.error("Erro ao enviar relatório por email:", error);
-      Alert.alert("Erro ao Enviar", `Não foi possível preparar ou enviar o relatório por email. Detalhes: ${error.message}`);
+    const filename = "relatorio_pedidos_lounge_acai.json";
+    
+    if (!FileSystem.cacheDirectory) {
+      Alert.alert("Erro de Sistema", "O diretório de cache do FileSystem não está disponível.");
+      console.error("handleSendReport: FileSystem.cacheDirectory é nulo ou indefinido.");
+      return;
     }
-  };
+    const fileUri = FileSystem.cacheDirectory + filename;
+    console.log("handleSendReport: URI do arquivo de relatório:", fileUri);
+
+    await FileSystem.writeAsStringAsync(fileUri, pedidosJson, {
+      encoding: FileSystem.EncodingType.UTF8,
+    });
+    console.log("handleSendReport: Arquivo de relatório escrito com sucesso.");
+
+    const fileInfo = await FileSystem.getInfoAsync(fileUri);
+    if (!fileInfo.exists) {
+      Alert.alert("Erro de Arquivo", "Falha ao verificar a existência do arquivo de relatório após a escrita.");
+      console.error("handleSendReport: Arquivo de relatório não existe em:", fileUri, "Detalhes:", fileInfo);
+      return;
+    }
+    console.log("handleSendReport: Arquivo de relatório confirmado. Existe:", fileInfo.exists, "Tamanho:", fileInfo.size);
+
+    // O bloco de teste "SEM ANEXO" que causava o erro foi removido.
+    // Agora vamos tentar enviar o email COM o anexo, que é o objetivo principal.
+
+    console.log("handleSendReport: Tentando compor o email COM anexo...");
+    const result = await MailComposer.composeAsync({
+      recipients: ["blablou32123@gmail.com"], // SUBSTITUIR PELO EMAIL REAL DE DESTINO
+      subject: `Relatório de Pedidos - Lounge do Açaí - ${new Date().toLocaleDateString('pt-BR')}`,
+      body: "Olá,\n\nSegue em anexo o relatório de pedidos gerado pelo sistema de autoatendimento.\n\nAtenciosamente,\nSistema Lounge do Açaí",
+      attachments: [fileUri], // URI do arquivo de relatório como um array
+    });
+    console.log("handleSendReport: Resultado do MailComposer.composeAsync (com anexo):", result);
+
+    if (result.status === MailComposer.MailComposerStatus.SENT) {
+      Alert.alert("Email Enviado", "O email foi preparado e enviado (ou está na caixa de saída).");
+    } else if (result.status === MailComposer.MailComposerStatus.SAVED) {
+      Alert.alert("Email Salvo", "O email foi salvo como rascunho.");
+    } else if (result.status === MailComposer.MailComposerStatus.CANCELLED) {
+      Alert.alert("Email Cancelado", "O envio do email foi cancelado.");
+    } else {
+      // MailComposer.MailComposerStatus.UNDETERMINED ou outro status
+      console.log("handleSendReport: Status do email indeterminado ou não tratado:", result.status);
+      Alert.alert("Status do Email", `Ocorreu um problema ou o status é desconhecido: ${result.status}`);
+    }
+
+  } catch (error: any) {
+    console.error("handleSendReport: Erro ao enviar relatório por email:", error, error.stack);
+    Alert.alert(
+      "Erro ao Enviar",
+      `Não foi possível preparar ou enviar o relatório. Detalhes: ${error.message}`
+    );
+  }
+};
   
   const handleClearOrders = async () => {
     Alert.alert(

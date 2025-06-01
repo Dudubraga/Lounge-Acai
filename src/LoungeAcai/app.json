@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/lounge_logo.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.edubraga.LoungeAcai"
     },
     "web": {
       "bundler": "metro",
@@ -38,6 +39,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b1de32b2-ceb8-4a02-bd36-6600e2f7717a"
+      }
     }
   }
 }
