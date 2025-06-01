@@ -53,3 +53,10 @@ export function useOrder() {
   if (!ctx) throw new Error("useOrder must be used within OrderProvider");
   return ctx;
 }
+
+export interface StoredPedido extends OrderDraft {
+  id: string;          // Unique ID for the order
+  total: number;
+  data: string;        // ISO string date for when the order was placed
+  productName: string; // The resolved product name for easier display in reports
+}

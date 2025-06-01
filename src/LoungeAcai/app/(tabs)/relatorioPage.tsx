@@ -1,51 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from "react-native"; // Added ActivityIndicator
 import TopSection from "../components/topSection";
-import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// Assuming StoredPedido is exported from where it's defined (e.g., summary.tsx or a types file)
+import { StoredPedido } from "./summary"; // Adjust path if it's moved
 
-// Exemplo: simula pedidos salvos localmente
-type Pedido = {
-  id: string;
-  produto: string;
-  tamanho: string;
-  acompanhamentos: string[];
-  frutas: string[];
-  local: string;
-  total: number;
-  data: string;
-};
+const ORDERS_STORAGE_KEY = "pedidos";
 
 export default function RelatorioPage() {
-  const router = useRouter();
-  const [pedidos, setPedidos] = useState<Pedido[]>([]);
+  const [pedidos, setPedidos] = useState<StoredPedido[]>([]);
+  const [isLoading, setIsLoading] = useState(true); // Loading state
 
-  // Simulação: buscar pedidos do AsyncStorage ou backend
+  const fetchPedidos = async () => {
+    setIsLoading(true);
+    try {
+      const pedidosJson = await AsyncStorage.getItem(ORDERS_STORAGE_KEY);
+      if (pedidosJson !== null) {
+        const parsedPedidos = JSON.parse(pedidosJson);
+        // Sort pedidos by date, newest first
+        parsedPedidos.sort((a: StoredPedido, b: StoredPedido) => new Date(b.data).getTime() - new Date(a.data).getTime());
+        setPedidos(parsedPedidos);
+      } else {
+        setPedidos([]);
+      }
+    } catch (error) {
+      console.error("Failed to load orders from AsyncStorage", error);
+      setPedidos([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // Aqui você buscaria do AsyncStorage ou API
-    // Exemplo mock:
-    setPedidos([
-      {
-        id: "1",
-        produto: "Açaí Puro com Xarope",
-        tamanho: "300ml",
-        acompanhamentos: ["Granola", "Leite em pó"],
-        frutas: ["Banana"],
-        local: "Local",
-        total: 18.5,
-        data: "2024-06-01 15:30",
-      },
-      {
-        id: "2",
-        produto: "Cupuaçu",
-        tamanho: "400ml",
-        acompanhamentos: [],
-        frutas: [],
-        local: "Viagem",
-        total: 22.5,
-        data: "2024-06-01 16:10",
-      },
-    ]);
+    fetchPedidos();
   }, []);
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color="#350E4D" />
+        <Text>Carregando relatório...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -56,23 +53,25 @@ export default function RelatorioPage() {
         ) : (
           pedidos.map((pedido) => (
             <View key={pedido.id} style={styles.pedidoBox}>
-              <Text style={styles.pedidoTitle}>{pedido.produto}</Text>
-              <Text style={styles.pedidoInfo}>Tamanho: {pedido.tamanho}</Text>
-              {pedido.acompanhamentos.length > 0 && (
+              <Text style={styles.pedidoTitle}>{pedido.productName}</Text>
+              {/* <Text style={styles.pedidoInfo}>ID do Pedido: {pedido.id.substring(0, 10)}...</Text> Shorten ID for display */}
+              <Text style={styles.pedidoInfo}>Data: {new Date(pedido.data).toLocaleString('pt-BR')}</Text>
+              {pedido.size && <Text style={styles.pedidoInfo}>Tamanho: {pedido.size}ml</Text>}
+              
+              {pedido.sideDishes && pedido.sideDishes.length > 0 && (
                 <Text style={styles.pedidoInfo}>
-                  Acompanhamentos: {pedido.acompanhamentos.join(", ")}
+                  Acompanhamentos: {pedido.sideDishes.map(s => s.name).join(", ")}
                 </Text>
               )}
-              {pedido.frutas.length > 0 && (
+              {pedido.fruits && pedido.fruits.length > 0 && (
                 <Text style={styles.pedidoInfo}>
-                  Frutas: {pedido.frutas.join(", ")}
+                  Frutas: {pedido.fruits.map(f => f.name).join(", ")}
                 </Text>
               )}
-              <Text style={styles.pedidoInfo}>Local: {pedido.local}</Text>
-              <Text style={styles.pedidoInfo}>
+              {pedido.place && <Text style={styles.pedidoInfo}>Local: {pedido.place === 'local' ? 'Comer no Local' : 'Para Viagem'}</Text>}
+              <Text style={styles.pedidoTotal}>
                 Total: R$ {pedido.total.toFixed(2).replace(".", ",")}
               </Text>
-              <Text style={styles.pedidoData}>{pedido.data}</Text>
             </View>
           ))
         )}
@@ -86,9 +85,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  centered: { // For loading indicator
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
   scrollContent: {
     padding: 20,
-    paddingBottom: 80,
+    paddingBottom: 80, // Ensure space for last item
   },
   emptyText: {
     textAlign: "center",
@@ -102,22 +107,27 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 18,
     elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
   },
   pedidoTitle: {
     fontWeight: "bold",
     fontSize: 20,
     color: "#350E4D",
-    marginBottom: 4,
+    marginBottom: 8, // Increased space
   },
   pedidoInfo: {
     fontSize: 16,
-    color: "#333",
-    marginBottom: 2,
+    color: "#444", // Slightly darker for better readability
+    marginBottom: 4, // Spacing between info lines
   },
-  pedidoData: {
-    fontSize: 14,
-    color: "#888",
-    marginTop: 6,
+  pedidoTotal: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: "#2E7D32", // Green for total
+    marginTop: 8,
     textAlign: "right",
   },
 });

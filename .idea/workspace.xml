@@ -5,22 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17cfa12c-7318-4e78-bdf2-45e38996d358" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LoungeAcai/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/app.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/adminPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/adminPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/chooseFruits.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/chooseFruits.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/chooseProduct.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/chooseProduct.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/chooseSize.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/chooseSize.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/relatorioPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/relatorioPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/sideDishes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/sideDishes.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/summary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/summary.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/waysToSweeten.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/waysToSweeten.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/whereToEat.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/app/(tabs)/whereToEat.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LoungeAcai/app/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/app/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LoungeAcai/data/menu.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/data/menu.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LoungeAcai/context/orderContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/context/orderContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LoungeAcai/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LoungeAcai/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/LoungeAcai/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ToDo.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/ToDo.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

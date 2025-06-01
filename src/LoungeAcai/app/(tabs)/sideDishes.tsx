@@ -3,26 +3,40 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native
 import TopSection from "../components/topSection";
 import BottomSection from "../components/bottomSection";
 import { useRouter } from "expo-router";
-import { sideOptions } from "../../data/menu";
+import { sideOptions as allSideOptions, SideOption } from "../../data/menu"; // Import SideOption type
 import { useOrder } from "../../context/orderContext";
 import { calculateOrderTotal } from "../../utils/calculateOrderTotal";
+import { getAvailability } from "../../utils/availability"; // Import getAvailability
 
 export default function SideDishes() {
   const router = useRouter();
   const { setSideDishes, draft } = useOrder();
   const [selected, setSelected] = useState<string[]>([]);
   const [total, setTotal] = useState(() => calculateOrderTotal(draft));
+  // No need for sideAvailability state if only used for initial filtering
+  const [displayableSideOptions, setDisplayableSideOptions] = useState<SideOption[]>([]);
+
+  useEffect(() => {
+    getAvailability().then((data) => {
+      const initialAvailability = Object.fromEntries(allSideOptions.map(s => [s.id, s.available]));
+      const currentAvailability = { ...initialAvailability, ...(data.sides || {}) };
+      
+      const availableOptions = allSideOptions.filter(
+        (option) => currentAvailability[option.id] !== false // Available if true or undefined (use default)
+      );
+      setDisplayableSideOptions(availableOptions);
+    });
+  }, []);
 
   useEffect(() => {
     setTotal(
       calculateOrderTotal({
         ...draft,
-        sideDishes: sideOptions.filter((s) => selected.includes(s.id)),
+        sideDishes: allSideOptions.filter((s) => selected.includes(s.id)),
       })
     );
   }, [selected, draft]);
 
-  // Limite grátis de acompanhamentos
   const size = draft.size || 200;
   const freeLimit = size === 200 ? 2 : size === 300 ? 3 : size === 400 ? 4 : 5;
 
@@ -33,7 +47,7 @@ export default function SideDishes() {
   };
 
   const handleContinue = () => {
-    const selectedSides = sideOptions.filter((s) => selected.includes(s.id));
+    const selectedSides = allSideOptions.filter((s) => selected.includes(s.id));
     setSideDishes(selectedSides);
     router.push("./chooseFruits");
   };
@@ -45,7 +59,7 @@ export default function SideDishes() {
         {selected.length}/{freeLimit} acompanhamentos grátis
       </Text>
       <FlatList
-        data={sideOptions}
+        data={displayableSideOptions} // Use filtered options
         contentContainerStyle={styles.flatListContent}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {
@@ -59,7 +73,8 @@ export default function SideDishes() {
               <View style={styles.sideCardContent}>
                 <Text style={styles.sideName}>{item.name}</Text>
                 <View style={[styles.circle, isSelected && styles.selectedCircle]}>
-                  {isSelected && <Text style={styles.checkMark}></Text>}
+                  {/* Checkmark can be an icon or styled text/view */}
+                  {isSelected && <Text style={styles.checkMark}>✓</Text>}
                 </View>
               </View>
             </TouchableOpacity>
