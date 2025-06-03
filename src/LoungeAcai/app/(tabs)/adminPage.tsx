@@ -150,7 +150,6 @@ export default function AdminPage() {
     } else if (result.status === MailComposer.MailComposerStatus.CANCELLED) {
       Alert.alert("Email Cancelado", "O envio do email foi cancelado.");
     } else {
-      // MailComposer.MailComposerStatus.UNDETERMINED ou outro status
       console.log("handleSendReport: Status do email indeterminado ou não tratado:", result.status);
       Alert.alert("Status do Email", `Ocorreu um problema ou o status é desconhecido: ${result.status}`);
     }

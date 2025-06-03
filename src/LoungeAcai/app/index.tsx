@@ -7,30 +7,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Index() {
   const router = useRouter();
-  const { clearDraft } = useOrder(); // <-- use clearDraft
+  const { clearDraft } = useOrder();
   const { draft } = useOrder();
   const total = calculateOrderTotal(draft);
-
-  // Estado para admin
   const [adminClicks, setAdminClicks] = useState(0);
 
-  // Tamanhos da logo
   const logoWidth = 350;
   const logoHeight = 350;
 
-  // Função para iniciar pedido
   const initializeOrder = () => {
-    clearDraft(); // Limpa o pedido anterior
+    clearDraft(); 
     router.push("./(tabs)/chooseProduct");
   };
 
-  // Função para admin (5 cliques)
   const handleAdminClick = () => {
     setAdminClicks((prev) => {
       const next = prev + 1;
       if (next >= 5) {
         router.push("./(tabs)/adminPage");
-        return 0; // reseta o contador após acessar
+        return 0;
       }
       return next;
     });

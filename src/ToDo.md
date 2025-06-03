@@ -1,26 +1,28 @@
-- perguntar a gilberto se pode pedir varias vezes o mesmo acompanhamento
-- os mostrar no resumo se não for nulo (tirar o "-")
+#### Cores de prioridades:
+- 🟥 Vermelho: Alta prioridade
+- 🟨 Amarelo: Média prioridade
+- 🟦 Azul: Baixa prioridade
+- 🟩 Verde: Outras tarefas
 
-### 🟥 Telas
-- pagina de admin
+### 🟥 Alta Prioridade
+- Bluetooth
+    - Conectar o app ao bluetooth do tablet
+    - Selecionar o dispositivo de impressão na página de Admin
+    - Imprimir
 
-### 🟥 Preços
-- quando voltar página, reiniciar o preço
+### 🟨 Média Prioridade
+- Relatório Diário
+    - Exportar esse Relatório por e-mail
+        - Aplicativo padrão de e-mail     
+        - Arquivo JSON -> Excel
 
-### 🟥 Relatório Diário
-- Banco de Dados Local (ver qual é o mais viavel)
-    - [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv) ?
-    - [react-native-async-storage](https://github.com/react-native-async-storage/async-storage) ?
-- Ver se Gilberto prefere resetar o Banco
-    - Diariamente/semanalmente em um horário específico e qual seria
-    - Manualmente quando ele quiser na página de ADM
-- Exportar esse Banco para o e-mail (ele vai precisar rotear internet pro tablet)
-    - Arquivo JSON -> Excel     
+### 🟦 Baixa Prioridade
+- Preços Dinâmicos 
+    - Conseguir atualizar os valores dos produtos
+    - Página de Admin
 
-### 🟧 Bluetooth
-- Conectar o app ao bluetooth do tablet
-- Selecionar o dispositvo de impressão na página de ADM
-- Imprimir
-
-### 🟧 Acompanhamentos Dinâmicos
-- Selecionar quais Acompanhamentos devem ser mostrados através da página de ADM
+### 🟩 Outras Tarefas
+- Fazer a documentação do projeto 
+    - README, instruções de uso e instalação
+    - Relatório do Projeto (Experiência)
+- Fazer um balanço de preços de tablets mais modernos
