@@ -98,14 +98,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between" 
   },
   infoText: {
-    fontSize: 22,
+    fontSize: 20,
     color: "#350E4D",
     fontWeight: "bold",
-    marginTop: 30,
+    marginTop: 20,
     alignSelf: 'center',
   },
   flatListContent: {
-    padding: 30,
+    padding: 10,
   },
   sideCard: {
     backgroundColor: '#F5F5F5',

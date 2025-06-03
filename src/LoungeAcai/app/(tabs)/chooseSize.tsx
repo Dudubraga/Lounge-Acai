@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   optionsContainer: {
     flexDirection: "column",
-    padding: 20,
+    padding: 5,
     justifyContent: "space-evenly",
   },
   optionCard: {

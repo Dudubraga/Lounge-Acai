@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
   },
   devButton: {
     position: "absolute",
-    top: 30,
-    left: 20,
+    top: 40,
+    left: 40,
     width: 40,
     height: 40,
     borderRadius: 25,

@@ -85,7 +85,7 @@ export default function WaysToSweeten() {
 
   return (
     <View style={styles.container}>
-      <TopSection title="Escolha como adoçar seu Açaí" />
+      <TopSection title="Como adoçar seu Açaí" />
       {availableSweeteners.length > 0 ? (
         <ScrollView contentContainerStyle={styles.optionsContainer}>
           {availableSweeteners.map((item) => (
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-evenly",
-    paddingVertical: 50,
-    paddingHorizontal: 40,
+    paddingVertical: 0,
+    paddingHorizontal: 30,
   },
   optionCard: {
     width: 250,

@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-evenly",
-    paddingVertical: 100,
+    paddingVertical: 0,
     paddingHorizontal: 30,
   },
   productCard: {
