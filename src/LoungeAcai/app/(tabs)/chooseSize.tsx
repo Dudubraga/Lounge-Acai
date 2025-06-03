@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F5F5F5",
     borderRadius: 16,
-    marginBottom: 16,
+    marginVertical: 5,
     borderWidth: 2,
     borderColor: "transparent",
     elevation: 2,
