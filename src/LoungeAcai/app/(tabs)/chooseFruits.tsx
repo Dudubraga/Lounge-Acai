@@ -17,7 +17,6 @@ export default function ChooseFruits() {
   const [fruitAvailability, setFruitAvailability] = useState<Record<string, boolean>>({});
   const { width } = useWindowDimensions();
 
-  // Atualiza o total ao selecionar frutas
   useEffect(() => {
     setTotal(
       calculateOrderTotal({
@@ -27,7 +26,6 @@ export default function ChooseFruits() {
     );
   }, [selected, draft]);
 
-  // Exemplo para frutas
   useEffect(() => {
     getAvailability().then((data) => {
       if (Object.keys(data.fruits).length === 0) {
@@ -38,7 +36,6 @@ export default function ChooseFruits() {
     });
   }, []);
 
-  // Responsivo: diminui tamanho dos cards em telas menores
   const isPhone = width < 700;
   const cardWidth = isPhone ? 150 : 250;
   const cardHeight = isPhone ? 170 : 270;

@@ -4,9 +4,9 @@ import TopSection from "../components/topSection";
 import BottomSection from "../components/bottomSection";
 import { useRouter } from "expo-router";
 import { productTypeImages } from "../../data/images";
-import { useOrder, ProductType } from "../../context/orderContext"; // Importar ProductType
+import { useOrder, ProductType } from "../../context/orderContext"; 
 import { calculateOrderTotal } from "../../utils/calculateOrderTotal";
-import { products, ProductSize } from "../../data/menu"; // Importar ProductSize
+import { products, ProductSize } from "../../data/menu"; 
 import { getAvailability } from "../../utils/availability";
 
 const PRODUCT_TYPES = [
@@ -19,7 +19,7 @@ const PRODUCT_TYPES = [
 
 export default function ChooseProduct() {
   const router = useRouter();
-  const { setType, setSize, draft } = useOrder(); // Adicionar setSize do contexto
+  const { setType, setSize, draft } = useOrder(); 
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [total, setTotal] = useState(() => calculateOrderTotal(draft));
   const [showWarning, setShowWarning] = useState(false);
@@ -27,7 +27,6 @@ export default function ChooseProduct() {
 
   useEffect(() => {
     if (selectedType) {
-      // Para o cálculo do total na tela atual, consideramos o tamanho fixo se for suco/vitamina
       const temporaryDraftForTotal = {
         ...draft,
         type: selectedType as ProductType,
@@ -41,7 +40,7 @@ export default function ChooseProduct() {
     } else {
       setTotal(calculateOrderTotal(draft));
     }
-  }, [selectedType, draft.type]); // Adicionado draft.type para recalcular se o tipo mudar por fora
+  }, [selectedType, draft.type]);
 
   useEffect(() => {
     getAvailability().then((data) => {
@@ -61,16 +60,15 @@ export default function ChooseProduct() {
     setShowWarning(false);
 
     const currentProductType = selectedType as ProductType;
-    setType(currentProductType); // setType já limpa o size para undefined
+    setType(currentProductType);
 
     if (currentProductType === "acai") {
       router.push("./waysToSweeten");
     } else if (currentProductType === "cupuaçu" || currentProductType === "meio-a-meio") {
       router.push("./chooseSize");
     } else if (currentProductType === "suco" || currentProductType === "vitamina") {
-      // Definir o tamanho fixo para suco e vitamina ANTES de navegar
       const fixedSize: ProductSize = 500;
-      setSize(fixedSize); // Define o tamanho no contexto
+      setSize(fixedSize); 
       router.push("./whereToEat");
     }
   };
@@ -79,7 +77,7 @@ export default function ChooseProduct() {
 
   const availableProductTypes = PRODUCT_TYPES.filter((typeObj) =>
     products.some(
-      (p) => p.type === typeObj.type && (availability[p.id] === undefined ? p.available : availability[p.id]) // Considera o default de menu.ts
+      (p) => p.type === typeObj.type && (availability[p.id] === undefined ? p.available : availability[p.id]) 
     )
   );
 

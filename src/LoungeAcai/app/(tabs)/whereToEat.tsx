@@ -6,7 +6,7 @@ import { useRouter } from "expo-router";
 import { placeImages } from "../../data/images";
 import { useOrder } from "../../context/orderContext";
 import { calculateOrderTotal } from "../../utils/calculateOrderTotal";
-import type { PlaceType } from "../../context/orderContext"; // ajuste o caminho se necessário
+import type { PlaceType } from "../../context/orderContext";
 
 const PLACES = [
   { type: "local", label: "Comer no local", imageKey: "local" },
@@ -34,7 +34,6 @@ export default function WhereToEat() {
     }
   }, [selected, draft]);
 
-  // Responsivo: mesmo padrão dos outros cards
   const isPhone = width < 700;
   const cardWidth = isPhone ? 150 : 250;
   const cardHeight = isPhone ? 170 : 270;

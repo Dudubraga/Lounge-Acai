@@ -28,7 +28,6 @@ export default function ChooseSize() {
   const imageSize = isTablet ? 140 : 90;
   const imageMargin = isTablet ? 40 : 18;
 
-  // Busca preço base do produto selecionado
   const getBasePrice = (size: number) => {
     const product = products.find(
       (p) =>

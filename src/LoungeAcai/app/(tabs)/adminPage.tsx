@@ -7,8 +7,8 @@ import { useRouter } from "expo-router";
 import TopSection from "../components/topSection";
 import { useIsFocused } from '@react-navigation/native';
 
-import * as MailComposer from 'expo-mail-composer'; // Importar MailComposer
-import * as FileSystem from 'expo-file-system'; // Importar FileSystem
+import * as MailComposer from 'expo-mail-composer';
+import * as FileSystem from 'expo-file-system';
 
 const STORAGE_KEYS = {
   products: "availability_products",
@@ -285,42 +285,41 @@ export default function AdminPage() {
   );
 }
 
-// Seus estilos permanecem os mesmos, apenas garanta que `destructiveButton` e `warningButton` estejam definidos
 const styles = StyleSheet.create({
   container: {
     padding: 24,
     backgroundColor: "#fff",
-    paddingBottom: 80, // Aumentado para dar mais espaço aos botões e listas
+    paddingBottom: 80, 
   },
   sectionTitle: {
     fontSize: 22,
     fontWeight: "bold",
     marginTop: 24,
-    marginBottom: 12, // Aumentado
+    marginBottom: 12,
     color: "#350E4D",
   },
   itemRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 14, // Aumentado
+    paddingVertical: 14,
     borderBottomWidth: 1,
-    borderColor: "#EAEAEA", // Mais suave
+    borderColor: "#EAEAEA",
   },
   itemName: {
     fontSize: 18,
     color: "#333",
     flex: 1,
-    marginRight: 10, // Aumentado
+    marginRight: 10,
   },
   button: {
     backgroundColor: "#350E4D",
-    paddingVertical: 16, // Aumentado
+    paddingVertical: 16,
     paddingHorizontal: 20,
-    borderRadius: 12, // Mais arredondado
-    marginTop: 18, // Aumentado
+    borderRadius: 12, 
+    marginTop: 18,
     alignItems: "center",
-    elevation: 3, // Sombra mais pronunciada
+    elevation: 3,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.22,
@@ -329,15 +328,15 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 17, // Ligeiramente menor para caber melhor
+    fontSize: 17, 
   },
   destructiveButton: {
-    backgroundColor: "#D32F2F", // Vermelho mais padrão para destrutivo
+    backgroundColor: "#D32F2F", 
   },
   warningButton: {
-    backgroundColor: "#FFA000", // Laranja para aviso
+    backgroundColor: "#FFA000",
   },
   warningButtonText: {
-    color: "#000", // ou #fff dependendo do tom do amarelo/laranja
+    color: "#000",
   }
 });

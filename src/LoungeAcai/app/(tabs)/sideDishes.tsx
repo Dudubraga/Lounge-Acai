@@ -3,17 +3,16 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native
 import TopSection from "../components/topSection";
 import BottomSection from "../components/bottomSection";
 import { useRouter } from "expo-router";
-import { sideOptions as allSideOptions, SideOption } from "../../data/menu"; // Import SideOption type
+import { sideOptions as allSideOptions, SideOption } from "../../data/menu";
 import { useOrder } from "../../context/orderContext";
 import { calculateOrderTotal } from "../../utils/calculateOrderTotal";
-import { getAvailability } from "../../utils/availability"; // Import getAvailability
+import { getAvailability } from "../../utils/availability";
 
 export default function SideDishes() {
   const router = useRouter();
   const { setSideDishes, draft } = useOrder();
   const [selected, setSelected] = useState<string[]>([]);
   const [total, setTotal] = useState(() => calculateOrderTotal(draft));
-  // No need for sideAvailability state if only used for initial filtering
   const [displayableSideOptions, setDisplayableSideOptions] = useState<SideOption[]>([]);
 
   useEffect(() => {
@@ -22,7 +21,7 @@ export default function SideDishes() {
       const currentAvailability = { ...initialAvailability, ...(data.sides || {}) };
       
       const availableOptions = allSideOptions.filter(
-        (option) => currentAvailability[option.id] !== false // Available if true or undefined (use default)
+        (option) => currentAvailability[option.id] !== false 
       );
       setDisplayableSideOptions(availableOptions);
     });
@@ -59,7 +58,7 @@ export default function SideDishes() {
         {selected.length}/{freeLimit} acompanhamentos grátis
       </Text>
       <FlatList
-        data={displayableSideOptions} // Use filtered options
+        data={displayableSideOptions}
         contentContainerStyle={styles.flatListContent}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {
@@ -73,7 +72,6 @@ export default function SideDishes() {
               <View style={styles.sideCardContent}>
                 <Text style={styles.sideName}>{item.name}</Text>
                 <View style={[styles.circle, isSelected && styles.selectedCircle]}>
-                  {/* Checkmark can be an icon or styled text/view */}
                   {isSelected && <Text style={styles.checkMark}>✓</Text>}
                 </View>
               </View>

@@ -7,8 +7,8 @@ import { sweetenerImages } from "../../data/images";
 import { useOrder } from "../../context/orderContext";
 import { calculateOrderTotal } from "../../utils/calculateOrderTotal";
 import type { SweetenerType } from "../../context/orderContext";
-import { getAvailability } from "../../utils/availability"; // Importar getAvailability
-import { products as allProducts, Product } from "../../data/menu"; // Importar todos os produtos e o tipo Product
+import { getAvailability } from "../../utils/availability"; 
+import { products as allProducts, Product } from "../../data/menu";
 
 // Mantém a definição original dos adoçantes como base
 const BASE_SWEETENERS = [
@@ -26,15 +26,13 @@ export default function WaysToSweeten() {
   const [selected, setSelected] = useState<SweetenerType | null>(null);
   const [total, setTotal] = useState(() => calculateOrderTotal(draft));
   const [showWarning, setShowWarning] = useState(false);
-  const [availableSweeteners, setAvailableSweeteners] = useState(BASE_SWEETENERS); // Estado para adoçantes disponíveis
+  const [availableSweeteners, setAvailableSweeteners] = useState(BASE_SWEETENERS); 
 
   useEffect(() => {
-    // Função para carregar e filtrar adoçantes
     const loadAndFilterSweeteners = async () => {
       const availabilityData = await getAvailability();
       const productAvailability = availabilityData.products || {};
 
-      // Filtra os adoçantes baseados na disponibilidade dos produtos de açaí correspondentes
       const filtered = BASE_SWEETENERS.filter(sweetenerOption => {
         // Encontra o produto de açaí que usa este adoçante
         const acaiProductWithThisSweetener = allProducts.find(
@@ -42,19 +40,15 @@ export default function WaysToSweeten() {
         );
 
         if (acaiProductWithThisSweetener) {
-          // Se o produto existir, verifica sua disponibilidade
-          // Se productAvailability[id] for undefined, usa o default de menu.ts (acaiProductWithThisSweetener.available)
           return productAvailability[acaiProductWithThisSweetener.id] ?? acaiProductWithThisSweetener.available;
         }
-        // Se não houver um produto de açaí específico para este adoçante no menu.ts, não o mostre
-        // (Isso pode acontecer se menu.ts e BASE_SWEETENERS estiverem dessincronizados)
         return false;
       });
       setAvailableSweeteners(filtered);
     };
 
     loadAndFilterSweeteners();
-  }, [draft.type]); // Recarregar se o tipo de produto mudar (embora esta tela seja para açaí)
+  }, [draft.type]);
 
   useEffect(() => {
     if (selected) {
@@ -65,8 +59,6 @@ export default function WaysToSweeten() {
         })
       );
     } else {
-      // Se nenhum adoçante estiver selecionado, mas o rascunho já tiver um tipo (açaí),
-      // o total deve ser calculado sem o adoçante ainda (ou com um default se aplicável)
       setTotal(calculateOrderTotal({ ...draft, sweetener: undefined }));
     }
   }, [selected, draft]);

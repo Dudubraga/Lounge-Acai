@@ -2,14 +2,13 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import TopSection from "../components/topSection";
 import { useRouter } from "expo-router";
-import { useOrder, OrderDraft } from "../../context/orderContext"; // Import OrderDraft
+import { useOrder, OrderDraft } from "../../context/orderContext";
 import { calculateOrderTotal } from "../../utils/calculateOrderTotal";
 import { products } from "../../data/menu";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ORDERS_STORAGE_KEY = "pedidos";
 
-// Define StoredPedido interface here or import if defined elsewhere
 export interface StoredPedido extends OrderDraft {
   id: string;
   total: number;
@@ -40,15 +39,15 @@ export default function Summary() {
         id: `${new Date().toISOString()}-${Math.random().toString(36).substr(2, 9)}`, // Simple unique ID
         total,
         data: new Date().toISOString(),
-        productName: productName, // Use the resolved product name
+        productName: productName,
       };
 
       currentOrders.push(newOrder);
       await AsyncStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(currentOrders));
       
       clearDraft();
-      Alert.alert("Pedido finalizado!", "Seu pedido foi registrado com sucesso.");
-      router.push("/"); // Navigate to home or a thank you page
+      Alert.alert("Pedido finalizado!", "Seu pedido foi registrado com sucesso. Obrigado pela preferência e volte sempre!");
+      router.push("/");
     } catch (error) {
       console.error("Failed to save order to AsyncStorage", error);
       Alert.alert("Erro ao Finalizar", "Não foi possível registrar o pedido. Por favor, tente novamente.");
@@ -73,7 +72,7 @@ export default function Summary() {
           <>
             <Text style={styles.summaryTitle}>Acompanhamentos:</Text>
             {draft.sideDishes.map((s) => (
-              <Text key={s.id} style={styles.summaryValueItem}> {/* Changed style for items */}
+              <Text key={s.id} style={styles.summaryValueItem}>
                 {"\t\t"}• {s.name}
               </Text>
             ))}
@@ -83,7 +82,7 @@ export default function Summary() {
          <>
             <Text style={styles.summaryTitle}>Frutas:</Text>
             {draft.fruits.map((f) => (
-              <Text key={f.id} style={styles.summaryValueItem}> {/* Changed style for items */}
+              <Text key={f.id} style={styles.summaryValueItem}>
                  {"\t\t"}• {f.name}
               </Text>
             ))}
@@ -99,7 +98,7 @@ export default function Summary() {
         )}
         <View style={styles.totalContainer}>
             <Text style={styles.summaryTitle}>Total: </Text>
-            <Text style={styles.totalValue}> {/* Distinct style for total value */}
+            <Text style={styles.totalValue}> 
                 R$ {total.toFixed(2).replace(".", ",")}
             </Text>
         </View>
@@ -115,41 +114,41 @@ const styles = StyleSheet.create({
   container: { 
     flex: 1, 
     backgroundColor: "#fff",
-    justifyContent: 'space-between', // Pushes button to bottom if content is short
+    justifyContent: 'space-between', 
   },
   summaryBox: {
-    backgroundColor: "#F9F9F9", // Slightly off-white for better contrast
+    backgroundColor: "#F9F9F9",
     borderRadius: 16,
-    padding: 25, // Increased padding
-    marginVertical: 40, // Adjusted vertical margin
-    marginHorizontal: 20, // Adjusted horizontal margin
-    elevation: 3, // Subtle shadow for Android
-    shadowColor: "#000", // Shadow for iOS
+    padding: 25, 
+    marginVertical: 40, 
+    marginHorizontal: 20, 
+    elevation: 3, 
+    shadowColor: "#000", 
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
   },
   summaryLine: {
-    fontSize: 22, // Base font size for lines
-    marginBottom: 10, // Spacing between lines
-    color: "#350E4D", // Theme color
-    lineHeight: 30, // Improve readability
+    fontSize: 22, 
+    marginBottom: 10, 
+    color: "#350E4D", 
+    lineHeight: 30, 
   },
   summaryTitle: {
     fontWeight: "bold",
-    color: "#350E4D", // Theme color
-    fontSize: 20, // Slightly smaller for titles within lines if needed, or keep same
-    marginBottom: 5, // Space below title if it's a block
+    color: "#350E4D", 
+    fontSize: 20, 
+    marginBottom: 5, 
   },
   summaryValue: {
-    color: "#555", // Dark gray for values, for contrast
+    color: "#555",
     fontSize: 20,
     fontWeight: "normal",
   },
-  summaryValueItem: { // Style for list items like fruits/sides
+  summaryValueItem: {
     color: "#555",
     fontSize: 18,
-    marginLeft: 10, // Indent items
+    marginLeft: 10, 
     marginBottom: 5,
     lineHeight: 26,
   },
@@ -163,16 +162,16 @@ const styles = StyleSheet.create({
     paddingTop: 15,
   },
   totalValue: {
-    color: "#2E7D32", // Green for total, or use theme accent
-    fontSize: 26, // Larger for emphasis
+    color: "#2E7D32", 
+    fontSize: 26, 
     fontWeight: "bold",
   },
   finishButton: {
     backgroundColor: "#350E4D",
     borderRadius: 16,
     paddingVertical: 20,
-    marginHorizontal: 20, // Consistent margin
-    marginBottom: 30, // Space from bottom
+    marginHorizontal: 20,
+    marginBottom: 30,
     alignItems: "center",
     elevation: 3,
   },

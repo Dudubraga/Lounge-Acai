@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from "react-native"; // Added ActivityIndicator
+import { StyleSheet, View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
 import TopSection from "../components/topSection";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// Assuming StoredPedido is exported from where it's defined (e.g., summary.tsx or a types file)
-import { StoredPedido } from "./summary"; // Adjust path if it's moved
+import { StoredPedido } from "./summary";
 
 const ORDERS_STORAGE_KEY = "pedidos";
 
 export default function RelatorioPage() {
   const [pedidos, setPedidos] = useState<StoredPedido[]>([]);
-  const [isLoading, setIsLoading] = useState(true); // Loading state
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [showTotal, setShowTotal] = useState(false);
+  const totalGeral = pedidos.reduce((sum, pedido) => sum + (pedido.total || 0), 0);
+  
   const fetchPedidos = async () => {
     setIsLoading(true);
     try {
@@ -43,7 +44,7 @@ export default function RelatorioPage() {
       </View>
     );
   }
-
+  
   return (
     <View style={styles.container}>
       <TopSection title="Relatório de Pedidos" showBackArrow={true} />
@@ -57,7 +58,6 @@ export default function RelatorioPage() {
               {/* <Text style={styles.pedidoInfo}>ID do Pedido: {pedido.id.substring(0, 10)}...</Text> Shorten ID for display */}
               <Text style={styles.pedidoInfo}>Data: {new Date(pedido.data).toLocaleString('pt-BR')}</Text>
               {pedido.size && <Text style={styles.pedidoInfo}>Tamanho: {pedido.size}ml</Text>}
-              
               {pedido.sideDishes && pedido.sideDishes.length > 0 && (
                 <Text style={styles.pedidoInfo}>
                   Acompanhamentos: {pedido.sideDishes.map(s => s.name).join(", ")}
@@ -76,6 +76,21 @@ export default function RelatorioPage() {
           ))
         )}
       </ScrollView>
+      {/* Rodapé fixo com o total geral */}
+      <View style={styles.bottomSection}>
+        <TouchableOpacity onPress={() => setShowTotal((prev) => !prev)}>
+          <Text style={styles.totalText}>
+            Total:{" "}
+            <Text style={styles.totalValue}>
+              {showTotal ? `R$ ${totalGeral.toFixed(2).replace(".", ",")}` : "R$ ******"}
+            </Text>
+            {"  "}
+            <Text style={styles.toggleButton}>
+              [{showTotal ? "Ocultar" : "Mostrar"}]
+            </Text>
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -85,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  centered: { // For loading indicator
+  centered: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -93,7 +108,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 20,
-    paddingBottom: 80, // Ensure space for last item
+    paddingBottom: 80,
   },
   emptyText: {
     textAlign: "center",
@@ -116,18 +131,41 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     color: "#350E4D",
-    marginBottom: 8, // Increased space
+    marginBottom: 8,
   },
   pedidoInfo: {
     fontSize: 16,
-    color: "#444", // Slightly darker for better readability
-    marginBottom: 4, // Spacing between info lines
+    color: "#444",
+    marginBottom: 4,
   },
   pedidoTotal: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: "#2E7D32", // Green for total
+    color: "#2E7D32",
     marginTop: 8,
     textAlign: "right",
+  },
+  bottomSection: {
+    backgroundColor: "#350E4D",
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+    alignItems: "center",
+  },
+  totalText: {
+    color: "#FFFFFF",
+    fontSize: 26,
+    fontWeight: "bold",
+  },
+  totalValue: {
+    color: "#FFFFFF",
+    fontSize: 26,
+    fontWeight: "bold",
+  },
+  toggleButton: {
+    color: "#9E9E9E",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
